@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  --color-main: #ff004f;
+  --color-main-deep: #af003f;
+  --color-second: #151533;
+  --color-third: #c6b467;
+  --color-fourth: #00ce0a;
+  --color-text-gray: #4d5454;
+  --color-ground: #f5f2ed;
+  --color-sand: #ebe5da;
+  --color-night: #0e0e26;
+
+  --font-sans: var(--font-poppins), "Poppins", sans-serif;
+  --font-display: var(--font-archivo), "Archivo", sans-serif;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+html {
+  background: var(--color-ground);
+  color: var(--color-second);
+  -webkit-font-smoothing: antialiased;
+}
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+body {
+  background: var(--color-ground);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection { background: var(--color-main); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--color-main);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* One vertical rhythm: every section gets the same padding, so every gap between two sections is 2 x --sy */
+:root {
+  /* Section rhythm: every section gets the same padding, so every gap is the same */
+  --sy: clamp(48px, 5vw, 112px);
+}
+@utility section-y {
+  padding-block: var(--sy);
+}
+
+@utility wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1504px;
+  padding-inline: clamp(20px, 4vw, 64px);
+  /* Large screens: keep the laptop proportions instead of growing the side margins */
+  @media (width >= 1600px) {
+    max-width: none;
+    padding-inline: 4vw;
+  }
+}
+
+@keyframes float-a { 0%,100% { transform: translate3d(0,0,0) rotate(var(--r,0deg)); } 50% { transform: translate3d(0,-16px,0) rotate(calc(var(--r,0deg) + 4deg)); } }
+.float { animation: float-a 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .float { animation: none; } }
+
+.font-display {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+}
+
+.press { transition: transform 160ms var(--ease-out), background-color 200ms ease, color 200ms ease; }
+.press:active { transform: scale(0.97); }
+
+@keyframes hover-bob {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1.5deg); }
+  50% { transform: translate3d(0, -14px, 0) rotate(1deg); }
+}
+.bob { animation: hover-bob 5s ease-in-out infinite; }
+
+@keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
+.marquee { animation: marquee 38s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bob, .marquee { animation: none; }
+}
+
+.fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.25) 6%, #000 24%, #000 76%, rgba(0,0,0,0.25) 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.25) 6%, #000 24%, #000 76%, rgba(0,0,0,0.25) 94%, transparent 100%);
+}
+
+/* Hero word and residence: explicit steps so the large-screen sizes always win */
+/* Phones and tablets: the word is sized from the width left between the margins, so the
+   seven letters fit without touching (the word is about 6.4 times its font size wide). */
+.hero-word { font-size: calc((100vw - 40px) / 6.9); }
+@media (width >= 640px) { .hero-word { font-size: calc(92vw / 6.9); } }
+.hero-house { width: 100%; }
+@media (width >= 640px) { .hero-house { width: 92%; } }
+@media (width >= 1024px) {
+  .hero-word { font-size: min(15vw, 214px); }
+  .hero-house { width: min(64vw, 108vh, 980px); }
+}
+@media (width >= 1600px) {
+  .hero-word { font-size: 14.6vw; }
+  .hero-house { width: min(56vw, 104vh); }
+}
+
+
+
