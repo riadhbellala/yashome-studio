@@ -16,7 +16,7 @@ export function Bridge() {
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const draw = useTransform(scrollYProgress, [0.15, 0.55], [reduce ? 1 : 0, 1]);
-  const phoneY = useTransform(scrollYProgress, [0, 1], [reduce ? 0 : 60, reduce ? 0 : -60]);
+  const phoneY = useTransform(scrollYProgress, [0, 1], [reduce ? 0 : 24, reduce ? 0 : -24]);
   const laptopY = useTransform(scrollYProgress, [0, 1], [reduce ? 0 : 30, reduce ? 0 : -30]);
 
   return (
@@ -56,7 +56,7 @@ export function Bridge() {
                 </div>
                 <Image src="/brand/mac-frame.webp" alt="" aria-hidden width={1360} height={837} sizes="(min-width:1024px) 40vw, 90vw" className="relative w-full" />
               </motion.div>
-              <motion.div style={{ y: phoneY }} className="absolute -bottom-[10%] -left-[4%] w-[38%] -rotate-6">
+              <motion.div style={{ y: phoneY }} className="absolute bottom-[6%] -left-[4%] w-[34%] -rotate-6">
                 <Image src="/brand/phone.webp" alt="L’application Yashome sur téléphone" width={562} height={531} sizes="16vw" className="w-full" />
               </motion.div>
             </div>
