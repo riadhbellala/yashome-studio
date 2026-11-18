@@ -1,40 +1,93 @@
+"use client";
+
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useRef, useState } from "react";
 import { contact } from "@/data/site";
-import { MaskLine, Reveal, RevealItem } from "@/components/motion/reveal";
+import { Button } from "@/components/ui/button";
+import { RIBBON_PATH, RIBBON_VIEWBOX } from "@/components/ui/ribbon";
+import { MaskLine } from "@/components/motion/reveal";
 
-const channels = [
-  { ...contact.whatsapp, name: "WhatsApp", cls: "bg-main text-white hover:bg-main-deep", external: true },
-  { ...contact.email, name: "E-mail", cls: "bg-second text-white hover:bg-night", external: false },
-  { ...contact.phone, name: "Téléphone", cls: "bg-white text-second hover:bg-sand", external: false },
-];
+const EASE = [0.23, 1, 0.32, 1] as const;
+const PROPERTIES = ["Villa", "Appartement", "Résidence", "Projet sur plan"];
+const NEEDS = ["Shooting photo", "Vidéo & reels", "Drone", "Visite 360°", "Publicité", "Identité"];
 
-export function Contact() {
+function Chip({ label, on, onClick }: { label: string; on: boolean; onClick: () => void }) {
   return (
-    <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 bg-ground section-y">
+    <button type="button" aria-pressed={on} onClick={onClick} className={`press h-11 rounded-full px-4 text-[14px] font-medium ${on ? "bg-second text-white" : "bg-ground text-second hover:bg-sand"}`}>
+      {label}
+    </button>
+  );
+}
+
+/** A short brief instead of a form: three choices become a ready-to-send WhatsApp message. */
+export function Contact() {
+  const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const [property, setProperty] = useState(PROPERTIES[0]);
+  const [needs, setNeeds] = useState<string[]>([NEEDS[0]]);
+  const [city, setCity] = useState("");
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
+  const draw = useTransform(scrollYProgress, [0.1, 1], [reduce ? 1 : 0, 1]);
+
+  const toggle = (n: string) => setNeeds((v) => (v.includes(n) ? v.filter((x) => x !== n) : [...v, n]));
+  const place = city.trim() ? ` à ${city.trim()}` : "";
+  const wanted = needs.length ? needs.join(", ").toLowerCase() : "un accompagnement";
+  const message = `Bonjour Yashome Studio, j’ai un bien à mettre en avant : ${property.toLowerCase()}${place}. Je cherche : ${wanted}.`;
+  const href = `${contact.whatsapp.href}?text=${encodeURIComponent(message)}`;
+
+  return (
+    <section id="contact" ref={ref} aria-labelledby="contact-title" className="scroll-mt-20 bg-ground section-y">
       <div className="wrap">
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-          <h2 id="contact-title" className="font-display t-h2 lg:col-span-9">
-            <MaskLine>Votre prochain bien</MaskLine>
-            <MaskLine delay={0.08}>mérite son film.</MaskLine>
-          </h2>
-          <p className="max-w-[360px] text-[17px] leading-[1.6] lg:col-span-3">{contact.lead}</p>
+        <div className="relative isolate overflow-hidden rounded-[36px] bg-main p-5 text-white sm:p-8 lg:p-14">
+          <svg aria-hidden viewBox={RIBBON_VIEWBOX} fill="none" className="pointer-events-none absolute -left-[28%] bottom-[-3%] -z-10 w-[120%] lg:-left-[12%] lg:w-[78%]">
+            <motion.path d={RIBBON_PATH} stroke="#E00046" strokeWidth={75} strokeMiterlimit={10} style={{ pathLength: draw }} />
+          </svg>
+
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-5">
+            <div className="flex flex-col justify-between gap-10 px-1 lg:col-span-6 lg:px-0 lg:pr-10">
+              <div>
+                <h2 id="contact-title" className="font-display t-h2">
+                  <MaskLine>Votre prochain</MaskLine>
+                  <MaskLine delay={0.08}>bien mérite</MaskLine>
+                  <MaskLine delay={0.16}>son film.</MaskLine>
+                </h2>
+                <p className="mt-6 max-w-[420px] text-[17px] leading-[1.6]">{contact.lead}</p>
+              </div>
+              <ul className="flex flex-wrap gap-x-8 gap-y-3 text-[15px] font-medium">
+                <li><a href={contact.email.href} className="underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white">{contact.email.label}</a></li>
+                <li><a href={contact.phone.href} className="underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white">{contact.phone.label}</a></li>
+              </ul>
+            </div>
+
+            <motion.form
+              onSubmit={(e) => e.preventDefault()}
+              aria-label="Préparer votre demande"
+              initial={reduce ? false : { opacity: 0, y: 36 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+              className="rounded-[28px] bg-white p-6 text-second md:p-9 lg:col-span-6"
+            >
+              <fieldset>
+                <legend className="font-display t-h5">Votre bien</legend>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {PROPERTIES.map((p) => <Chip key={p} label={p} on={p === property} onClick={() => setProperty(p)} />)}
+                </div>
+              </fieldset>
+              <fieldset className="mt-8">
+                <legend className="font-display t-h5">Ce qu’il vous faut</legend>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {NEEDS.map((n) => <Chip key={n} label={n} on={needs.includes(n)} onClick={() => toggle(n)} />)}
+                </div>
+              </fieldset>
+              <label className="mt-8 block">
+                <span className="font-display t-h5">Votre ville</span>
+                <input value={city} onChange={(e) => setCity(e.target.value)} autoComplete="address-level2" placeholder="Oran, Alger, Constantine…" className="mt-4 h-12 w-full rounded-full bg-ground px-5 text-[16px] text-second outline-none transition-shadow placeholder:text-text-gray focus:ring-2 focus:ring-main" />
+              </label>
+              <Button href={href} external className="mt-8 flex w-full">{contact.whatsapp.label}</Button>
+            </motion.form>
+          </div>
         </div>
-        <Reveal className="mt-12 grid gap-5 md:mt-16 md:grid-cols-3">
-          {channels.map((c) => (
-            <RevealItem key={c.name}>
-              <a
-                href={c.href}
-                {...(c.external ? { target: "_blank", rel: "noreferrer" } : {})}
-                className={`press group flex h-[220px] flex-col justify-between rounded-[28px] p-7 md:h-[260px] ${c.cls}`}
-              >
-                <span className="flex items-center justify-between text-[15px] font-medium opacity-80">
-                  {c.name}
-                  <span aria-hidden className="text-[22px] transition-transform duration-300 ease-[var(--ease-out)] group-hover:-rotate-45">→</span>
-                </span>
-                <span className="font-display t-h5 lg:text-[22px]">{c.label}</span>
-              </a>
-            </RevealItem>
-          ))}
-        </Reveal>
       </div>
     </section>
   );
