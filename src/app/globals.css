@@ -110,3 +110,10 @@ body {
 
 
 
+
+/* Type scale: every heading on the page uses one of these */
+.t-h2, .t-h3, .t-h4, .t-h5 { font-weight: 800; }
+.t-h2 { font-size: clamp(38px, 5.2vw, 124px); line-height: .95; letter-spacing: -.05em; }
+.t-h3 { font-size: clamp(30px, 3.4vw, 80px); line-height: 1; letter-spacing: -.045em; }
+.t-h4 { font-size: clamp(24px, 2vw, 46px); line-height: 1.05; letter-spacing: -.04em; }
+.t-h5 { font-size: 19px; line-height: 1.2; letter-spacing: -.03em; }

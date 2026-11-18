@@ -100,14 +100,14 @@ export function About() {
         </div>
       <div className="wrap relative">
         <div className="relative md:max-w-[52%]">
-          <h2 id="about-title" className="font-display text-[clamp(34px,5.4vw,138px)] font-extrabold leading-[0.92] tracking-[-0.05em]">
+          <h2 id="about-title" className="font-display t-h2">
             <MaskLine>Le studio</MaskLine>
             <MaskLine delay={0.08}>
               de Yashome<span className="text-main">.</span>
             </MaskLine>
           </h2>
           <span aria-hidden className="about-bar mt-8 block h-[6px] w-[min(100%,560px)] rounded-full bg-main" />
-          <p className="mt-8 max-w-[640px] text-[18px] leading-[1.65] md:text-[20px]">{about.lead}</p>
+          <p className="mt-8 max-w-[640px] text-[17px] leading-[1.65] ">{about.lead}</p>
         </div>
 
       </div>
@@ -125,11 +125,11 @@ export function About() {
                 className={`about-prop pointer-events-none absolute bottom-[calc(100%-2px)] z-10 h-auto ${PROPS[i].cls}`}
                 style={{ right: 110 }}
               />
-              <article className="group relative flex h-full min-h-[280px] flex-col justify-end rounded-[32px] bg-second p-7 text-white md:p-9">
+              <article className="group relative flex h-full min-h-[280px] flex-col justify-end rounded-[28px] bg-second p-7 text-white md:p-9">
                 <Notch ground="#f5f2ed" size={86}>
                   <ArrowDot />
                 </Notch>
-                <h3 className="font-display text-[clamp(28px,2.4vw,38px)] font-extrabold tracking-[-0.04em]">{c.title}</h3>
+                <h3 className="font-display t-h4">{c.title}</h3>
                 <p className="mt-3 max-w-[340px] text-[16px] leading-[1.55] text-white/75">{c.text}</p>
               </article>
             </li>

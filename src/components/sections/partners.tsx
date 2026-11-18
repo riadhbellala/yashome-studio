@@ -21,7 +21,7 @@ export function Partners() {
   return (
     <section ref={ref} aria-labelledby="partners-title" className="relative overflow-hidden bg-ground section-y">
       <div className="wrap flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <h2 id="partners-title" className="font-display text-[clamp(34px,5vw,128px)] font-extrabold leading-[0.92] tracking-[-0.05em]">
+        <h2 id="partners-title" className="font-display t-h2">
           <MaskLine>Ils nous font</MaskLine>
           <MaskLine delay={0.08}>
             confiance<span className="text-main">.</span>
@@ -30,7 +30,7 @@ export function Partners() {
         <p className="max-w-[360px] pb-2 text-[17px] leading-[1.6]">Promoteurs, agences et marques qui ont confié leurs projets au studio.</p>
       </div>
 
-      <div className="relative mt-16 md:mt-24">
+      <div className="relative mt-12 md:mt-16">
         <svg aria-hidden viewBox={LINE_WAVE.viewBox} fill="none" className="pointer-events-none absolute left-1/2 top-1/2 w-[140%] max-w-[2400px] -translate-x-1/2 -translate-y-1/2">
           <path d={LINE_WAVE.path} stroke="#ebe5da" strokeWidth={LINE_WAVE.stroke} />
         </svg>
@@ -42,7 +42,7 @@ export function Partners() {
                 {[0, 1, 2, 3].map((copy) => partners.map((p, i) => (
                   <li
                     key={`${copy}-${i}`}
-                    className={`group grid h-[130px] w-[230px] shrink-0 place-items-center rounded-[32px] bg-white transition-transform duration-500 ease-[var(--ease-out)] hover:-translate-y-1 md:h-[170px] md:w-[300px] ${copy % 2 ? "max-md:hidden" : ""}`}
+                    className={`group grid h-[130px] w-[230px] shrink-0 place-items-center rounded-[28px] bg-white transition-transform duration-500 ease-[var(--ease-out)] hover:-translate-y-1 md:h-[170px] md:w-[300px] ${copy % 2 ? "max-md:hidden" : ""}`}
                   >
                     <Image
                       src={p.src}

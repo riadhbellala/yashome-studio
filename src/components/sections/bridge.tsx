@@ -22,7 +22,7 @@ export function Bridge() {
   return (
     <section ref={ref} aria-labelledby="bridge-title" className="bg-ground section-y">
       <div className="wrap">
-        <div className="relative isolate overflow-hidden rounded-[40px] bg-second px-6 py-14 text-white md:px-14 md:py-20 lg:px-16">
+        <div className="relative isolate overflow-hidden rounded-[36px] bg-second px-6 py-14 text-white md:px-14 md:py-20 lg:px-16">
           <svg aria-hidden viewBox={RIBBON_VIEWBOX} fill="none" className="pointer-events-none absolute -right-[30%] bottom-[-6%] -z-10 w-[130%] md:-right-[8%] md:bottom-[-10%] md:w-[80%]">
             <path d={RIBBON_PATH} stroke="#22224a" strokeWidth={75} strokeMiterlimit={10} />
             <motion.path d={RIBBON_PATH} stroke="#FF004F" strokeWidth={75} strokeMiterlimit={10} style={{ pathLength: draw }} />
@@ -30,7 +30,7 @@ export function Bridge() {
 
           <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
             <div className="lg:col-span-6">
-              <h2 id="bridge-title" className="font-display text-[clamp(34px,3.9vw,100px)] font-extrabold leading-[0.95] tracking-[-0.05em]">
+              <h2 id="bridge-title" className="font-display t-h3">
                 <MaskLine>{bridge.title[0]}</MaskLine>
                 <MaskLine delay={0.08} className="text-main">{bridge.title[1]}</MaskLine>
               </h2>

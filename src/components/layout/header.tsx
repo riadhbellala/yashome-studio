@@ -107,7 +107,7 @@ export function Header() {
             className="flex flex-col gap-1 bg-ground px-5 pb-8 lg:hidden"
           >
             {nav.links.map((l) => (
-              <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="font-display py-2 text-[34px] font-extrabold tracking-[-0.04em]">
+              <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="font-display py-2 t-h3">
                 {l.label}
               </a>
             ))}

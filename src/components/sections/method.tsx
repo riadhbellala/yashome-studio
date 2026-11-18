@@ -24,14 +24,14 @@ export function Method() {
         ))}
       </svg>
       <div className="relative wrap">
-        <h2 id="method-title" className="font-display max-w-[900px] text-[clamp(36px,6vw,154px)] font-extrabold leading-[0.9] tracking-[-0.05em]">
+        <h2 id="method-title" className="font-display max-w-[900px] t-h2">
           <MaskLine>De la visite</MaskLine>
           <MaskLine delay={0.08}>à la vente.</MaskLine>
         </h2>
-        <Reveal as="div" className="mt-20 grid gap-6 sm:grid-cols-2 md:mt-[clamp(120px,12vw,307px)] lg:grid-cols-4">
+        <Reveal as="div" className="mt-20 grid gap-5 sm:grid-cols-2 md:mt-[clamp(120px,12vw,307px)] lg:grid-cols-4">
           {method.map((m) => (
             <RevealItem key={m.verb} className="rounded-[28px] bg-white p-7 md:p-8">
-              <h3 className="font-display text-[clamp(28px,2.4vw,38px)] font-extrabold tracking-[-0.04em]">{m.verb}</h3>
+              <h3 className="font-display t-h4">{m.verb}</h3>
               <p className="mt-4 text-[16px] leading-[1.6] text-text-gray">{m.text}</p>
             </RevealItem>
           ))}

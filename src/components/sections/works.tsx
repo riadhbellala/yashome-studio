@@ -31,7 +31,7 @@ export function Works() {
     <section id="realisations" ref={wrap} aria-labelledby="works-title" className="relative bg-ground" style={{ height: dist ? `calc(100vh + ${dist}px)` : undefined }}>
       <div className="section-y top-0 overflow-hidden lg:sticky lg:!py-0 lg:flex lg:h-[100vh] lg:flex-col lg:justify-center lg:py-0">
         <div className="wrap flex items-end justify-between gap-8">
-          <h2 id="works-title" className="font-display text-[clamp(36px,6vw,154px)] font-extrabold leading-[0.9] tracking-[-0.05em]">
+          <h2 id="works-title" className="font-display t-h2">
             <MaskLine>Nos réalisations</MaskLine>
           </h2>
           <p className="hidden max-w-[360px] pb-2 text-[17px] leading-[1.6] md:block">
@@ -48,11 +48,11 @@ export function Works() {
             {works.map((w) => (
               <WorkCard key={w.id} work={w} />
             ))}
-            <a href="#contact" className="press group flex w-[78vw] shrink-0 snap-start flex-col justify-between rounded-[32px] bg-main p-8 text-white sm:w-[44vw] lg:h-[54vh] lg:w-[24vw]">
+            <a href="#contact" className="press group flex w-[78vw] shrink-0 snap-start flex-col justify-between rounded-[28px] bg-main p-8 text-white sm:w-[44vw] lg:h-[54vh] lg:w-[24vw]">
               <span aria-hidden className="grid size-14 place-items-center rounded-full bg-white text-main transition-transform duration-500 ease-[var(--ease-out)] group-hover:rotate-45">
                 <svg width="20" height="20" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3m0 0H4.5M11 3v6.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </span>
-              <span className="font-display mt-16 text-[clamp(28px,2.4vw,61px)] font-extrabold leading-[0.98] tracking-[-0.045em]">Le prochain, c’est le vôtre.</span>
+              <span className="font-display mt-16 t-h4">Le prochain, c’est le vôtre.</span>
             </a>
           </motion.div>
 
@@ -69,7 +69,7 @@ function WorkCard({ work }: { work: Work }) {
   const illu = work.image?.startsWith("/images/illustrations");
   return (
     <article className="group w-[78vw] shrink-0 snap-start sm:w-[54vw] lg:w-[38vw]">
-      <div className={`relative overflow-hidden rounded-[32px] ${illu ? "bg-[#fbe4ec]" : "bg-second"} aspect-[4/3] lg:aspect-auto lg:h-[54vh]`}>
+      <div className={`relative overflow-hidden rounded-[28px] ${illu ? "bg-[#fbe4ec]" : "bg-second"} aspect-[4/3] lg:aspect-auto lg:h-[54vh]`}>
         {work.image && (
           <Image
             src={work.image}
@@ -79,11 +79,11 @@ function WorkCard({ work }: { work: Work }) {
             className={`transition-transform duration-[1.2s] ease-[var(--ease-out)] group-hover:scale-[1.04] ${illu ? "object-contain p-[8%]" : "object-cover"}`}
           />
         )}
-        <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1.5 text-[12px] font-medium text-second">Visuel d’exemple</span>
+        <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1.5 text-[13px] font-medium text-second">Visuel d’exemple</span>
       </div>
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
         <div>
-          <h3 className="font-display text-[clamp(22px,1.8vw,30px)] font-extrabold leading-tight tracking-[-0.035em]">{work.title}</h3>
+          <h3 className="font-display t-h4 leading-tight">{work.title}</h3>
           <p className="mt-1 text-[15px] text-text-gray">
             {work.client} · {work.place}
           </p>
