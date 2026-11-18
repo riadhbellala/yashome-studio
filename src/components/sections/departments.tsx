@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { departments, type Department, type Creation } from "@/data/site";
+import { Button } from "@/components/ui/button";
 import { Placeholder } from "@/components/ui/placeholder";
 import { MaskLine } from "@/components/motion/reveal";
 
@@ -96,7 +97,7 @@ function FolderCard({ dep, index }: { dep: Department; index: number }) {
 
 function Thumb({ c }: { c: Creation }) {
   if (!c.image) return <Placeholder tone={c.tone} label="" className="h-full w-full" />;
-  const illu = c.image.startsWith("/illu");
+  const illu = c.image.startsWith("/images/illustrations");
   return (
     <div className={`relative h-full w-full ${illu ? "bg-[#fbe4ec]" : "bg-white"}`}>
       <Image src={c.image} alt="" fill sizes="(min-width:1024px) 30vw, 90vw" className={illu ? "object-contain p-[8%]" : "object-cover"} />
@@ -141,12 +142,9 @@ function DepartmentSection({ dep, index }: { dep: Department; index: number }) {
                 </li>
               ))}
             </ul>
-            <a href="#contact" className="press group mt-9 flex h-14 items-center justify-between rounded-full bg-second pl-6 pr-2 text-[15px] font-semibold text-white hover:bg-night">
+            <Button href="#contact" theme="navy" className="mt-9 flex w-full">
               {dep.cta}
-              <span aria-hidden className="grid size-10 place-items-center rounded-full bg-main transition-transform duration-500 ease-[var(--ease-out)] group-hover:rotate-45">
-                <svg width="15" height="15" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3m0 0H4.5M11 3v6.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              </span>
-            </a>
+            </Button>
           </motion.div>
         </div>
 

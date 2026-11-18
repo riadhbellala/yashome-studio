@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { partners } from "@/data/site";
-import { RIBBON_PATH, RIBBON_VIEWBOX } from "@/components/ui/ribbon";
+import { LINE_WAVE } from "@/components/ui/ribbon";
 import { MaskLine } from "@/components/motion/reveal";
 
 /**
@@ -31,8 +31,8 @@ export function Partners() {
       </div>
 
       <div className="relative mt-16 md:mt-24">
-        <svg aria-hidden viewBox={RIBBON_VIEWBOX} fill="none" className="pointer-events-none absolute left-1/2 top-1/2 w-[140%] max-w-[2400px] -translate-x-1/2 -translate-y-1/2">
-          <path d={RIBBON_PATH} stroke="#ebe5da" strokeWidth={75} strokeMiterlimit={10} />
+        <svg aria-hidden viewBox={LINE_WAVE.viewBox} fill="none" className="pointer-events-none absolute left-1/2 top-1/2 w-[140%] max-w-[2400px] -translate-x-1/2 -translate-y-1/2">
+          <path d={LINE_WAVE.path} stroke="#ebe5da" strokeWidth={LINE_WAVE.stroke} />
         </svg>
         <div className="fade-x relative grid gap-5">
           {[a, b].map((shift, r) => (

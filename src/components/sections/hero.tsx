@@ -135,8 +135,8 @@ export function Hero() {
         transition={{ duration: 0.9, ease: EASE, delay: 0.8 }}
         className="wrap relative z-20 order-4 -mt-[13vw] flex flex-row flex-nowrap items-center gap-2 pb-8 sm:mt-4 lg:absolute lg:inset-x-0 lg:bottom-[7vh] lg:mt-0 lg:pb-0"
       >
-        <Button href={hero.primary.href} className="max-sm:h-11 max-sm:gap-2 max-sm:pl-4 max-sm:text-[13px] max-sm:[&_.btn-icon]:size-8">{hero.primary.label}</Button>
-        <Button href={hero.secondary.href} theme="light" className="max-sm:h-11 max-sm:gap-2 max-sm:pl-4 max-sm:text-[13px] max-sm:[&_.btn-icon]:size-8">
+        <Button href={hero.primary.href} className="max-sm:h-11 max-sm:text-[13px] max-sm:[--d:34px] max-sm:[--px:14px]">{hero.primary.label}</Button>
+        <Button href={hero.secondary.href} theme="light" className="max-sm:h-11 max-sm:text-[13px] max-sm:[--d:34px] max-sm:[--px:14px]">
           <span className="sm:hidden">Réalisations</span>
           <span className="max-sm:hidden">{hero.secondary.label}</span>
         </Button>
@@ -150,10 +150,10 @@ export function Hero() {
         className="relative z-10 order-3 mx-auto hero-house -mt-[1vw] lg:pt-0 max-w-none self-center lg:absolute lg:bottom-[-5vh] lg:left-1/2 lg:mt-0 lg:-translate-x-1/2"
       >
         <motion.div style={{ y: houseY, scale: houseScale }} className="relative origin-bottom">
-          <Image src="/hero/shadow.webp" alt="" width={1299} height={162} aria-hidden className="absolute -bottom-[4%] left-[2%] w-[96%] opacity-70" />
-          <Image src="/hero/residence.webp" alt="Résidence contemporaine en pierre et béton blanc, fenêtres éclairées au crépuscule" width={975} height={594} priority sizes="(min-width:1024px) 64vw, 118vw" className="relative w-full" />
+          <Image src="/images/hero/shadow.webp" alt="" width={1299} height={162} aria-hidden className="absolute -bottom-[4%] left-[2%] w-[96%] opacity-70" />
+          <Image src="/images/hero/residence.webp" alt="Résidence contemporaine en pierre et béton blanc, fenêtres éclairées au crépuscule" width={975} height={594} priority sizes="(min-width:1024px) 64vw, 118vw" className="relative w-full" />
           <motion.div style={{ opacity: night }} className="absolute inset-0">
-            <Image src="/hero/residence-night.webp" alt="" aria-hidden width={975} height={594} sizes="(min-width:1024px) 64vw, 118vw" className="w-full" />
+            <Image src="/images/hero/residence-night.webp" alt="" aria-hidden width={975} height={594} sizes="(min-width:1024px) 64vw, 118vw" className="w-full" />
           </motion.div>
         </motion.div>
       </motion.div>
@@ -169,7 +169,7 @@ export function Hero() {
           transition={{ duration: 1.8, ease: EASE, delay: 0.9 }}
         >
           <motion.div style={{ x: droneX, y: droneY, rotate: tilt }}>
-            <Image src="/hero/drone.webp" alt="Drone de tournage du studio" width={1022} height={431} sizes="20vw" className="bob w-full drop-shadow-none" />
+            <Image src="/images/hero/drone.webp" alt="Drone de tournage du studio" width={1022} height={431} sizes="20vw" className="bob w-full drop-shadow-none" />
           </motion.div>
         </motion.div>
       </motion.div>

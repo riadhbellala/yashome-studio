@@ -50,11 +50,11 @@ export function Bridge() {
 
             <div className="relative lg:col-span-6">
               <motion.div style={{ y: laptopY }}>
-                <Image src="/brand/device-laptop.webp" alt="Le site Yashome sur un ordinateur portable" width={1360} height={837} sizes="(min-width:1024px) 44vw, 90vw" className="w-full" />
+                <Image src="/images/devices/laptop-yashome.webp" alt="Le site Yashome sur un ordinateur portable" width={1360} height={837} sizes="(min-width:1024px) 44vw, 90vw" className="w-full" />
               </motion.div>
               {/* Whole phone, shorter than the laptop, so the card never clips it */}
               <motion.div style={{ y: phoneY }} className="absolute bottom-[3%] -left-[3%] w-[23%] -rotate-3">
-                <Image src="/brand/device-phone.webp" alt="Le site Yashome sur un téléphone" width={667} height={1333} sizes="(min-width:1024px) 11vw, 22vw" className="w-full" />
+                <Image src="/images/devices/phone-yashome.webp" alt="Le site Yashome sur un téléphone" width={667} height={1333} sizes="(min-width:1024px) 11vw, 22vw" className="w-full" />
               </motion.div>
             </div>
           </div>

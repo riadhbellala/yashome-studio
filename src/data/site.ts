@@ -39,7 +39,7 @@ export type Department = {
   creations: Creation[];
 };
 
-const ILLU = { villa: "/works/villa.webp", appart: "/works/appartment.webp", photo: "/works/residence.webp", campaign: "/works/yashome-og.webp", villa2: "/illu/villa.webp", building: "/illu/building.webp" };
+const ILLU = { villa: "/images/works/villa.webp", appart: "/images/works/appartment.webp", photo: "/images/works/residence.webp", campaign: "/images/works/yashome-og.webp", villa2: "/images/illustrations/villa.webp", building: "/images/illustrations/building.webp" };
 
 /** Departments of the studio, digital only. Creations are samples until the real work arrives. */
 export const departments: Department[] = [
@@ -47,7 +47,7 @@ export const departments: Department[] = [
     id: "shooting",
     tagline: "La première impression.",
     cta: "Réserver un shooting",
-    icon: "/icons/shooting.webp",
+    icon: "/images/departments/shooting.webp",
     head: "pink",
     name: "Shooting photo",
     definition: "Des photos HDR grand angle, lumière retravaillée, qui donnent envie de visiter avant même d’appeler.",
@@ -64,7 +64,7 @@ export const departments: Department[] = [
     id: "video",
     tagline: "Le bien en mouvement.",
     cta: "Lancer un tournage",
-    icon: "/icons/video.webp",
+    icon: "/images/departments/video.webp",
     head: "navy",
     name: "Production audiovisuelle",
     definition: "La visite filmée comme un film : plans stabilisés, drone 4K, montage rythmé, musique et sous-titres.",
@@ -80,7 +80,7 @@ export const departments: Department[] = [
     id: "social",
     tagline: "Présents chaque semaine.",
     cta: "Confier nos réseaux",
-    icon: "/icons/social.webp",
+    icon: "/images/departments/social.webp",
     head: "gold",
     name: "Réseaux sociaux",
     definition: "Ce que vos abonnés voient chaque semaine : visuels, reels et publications, tenus pour vous.",
@@ -96,7 +96,7 @@ export const departments: Department[] = [
     id: "branding",
     tagline: "Le visage du projet.",
     cta: "Créer une identité",
-    icon: "/icons/branding.webp",
+    icon: "/images/departments/branding.webp",
     head: "pink",
     name: "Branding",
     definition: "Le visage de votre agence ou de votre projet : nom, logo, couleurs, ton, jusqu’au panneau de chantier.",
@@ -111,7 +111,7 @@ export const departments: Department[] = [
     id: "marketing",
     tagline: "Devant les bons acheteurs.",
     cta: "Lancer une campagne",
-    icon: "/icons/marketing.webp",
+    icon: "/images/departments/marketing.webp",
     head: "navy",
     name: "Stratégie & publicité",
     definition: "Le plan qui relie votre bien aux bons acheteurs : qui viser, quoi dire, sur quels canaux, à quel budget.",
@@ -126,7 +126,7 @@ export const departments: Department[] = [
     id: "visite",
     tagline: "Visiter sans se déplacer.",
     cta: "Créer une visite 360°",
-    icon: "/icons/visite.webp",
+    icon: "/images/departments/visite.webp",
     head: "gold",
     name: "Visite virtuelle 360°",
     definition: "L’acheteur se promène dans le bien depuis son téléphone, pièce par pièce, à toute heure.",
@@ -138,7 +138,7 @@ export const departments: Department[] = [
     id: "dev",
     tagline: "Votre vitrine en ligne.",
     cta: "Lancer un site",
-    icon: "/icons/dev.svg",
+    icon: "/images/departments/dev.svg",
     head: "navy",
     name: "Web & mobile",
     definition: "Sites et applications pour agences et promoteurs : catalogue de biens, page de projet, formulaires de contact reliés à Yashome.",
@@ -171,12 +171,12 @@ export const works: Work[] = [
 ];
 
 export const partners = [
-  { name: "BTPM", src: "/partners-clean/btpm.svg" },
-  { name: "Enjoy", src: "/partners-clean/enjoy.svg" },
-  { name: "Jyson", src: "/partners-clean/jyson.svg" },
-  { name: "Louni", src: "/partners-clean/louni.png" },
-  { name: "NC Déco", src: "/partners-clean/ncdeco.svg" },
-  { name: "RB", src: "/partners-clean/rb.svg" },
+  { name: "BTPM", src: "/images/partners/btpm.svg" },
+  { name: "Enjoy", src: "/images/partners/enjoy.svg" },
+  { name: "Jyson", src: "/images/partners/jyson.svg" },
+  { name: "Louni", src: "/images/partners/louni.png" },
+  { name: "NC Déco", src: "/images/partners/ncdeco.svg" },
+  { name: "RB", src: "/images/partners/rb.svg" },
 ];
 
 export const bridge = {

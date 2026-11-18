@@ -66,7 +66,7 @@ export function Works() {
 }
 
 function WorkCard({ work }: { work: Work }) {
-  const illu = work.image?.startsWith("/illu");
+  const illu = work.image?.startsWith("/images/illustrations");
   return (
     <article className="group w-[78vw] shrink-0 snap-start sm:w-[54vw] lg:w-[38vw]">
       <div className={`relative overflow-hidden rounded-[32px] ${illu ? "bg-[#fbe4ec]" : "bg-second"} aspect-[4/3] lg:aspect-auto lg:h-[54vh]`}>

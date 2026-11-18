@@ -13,9 +13,9 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 /** Small props that stand on top of each navy card. */
 const PROPS = [
-  { src: "/illu/tree.webp", w: 166, h: 193, cls: "right-10 w-[78px] md:w-[92px]" },
-  { src: "/illu/camera.webp", w: 140, h: 184, cls: "right-10 w-[62px] md:w-[74px]" },
-  { src: "/illu/sign.webp", w: 195, h: 167, cls: "right-10 w-[92px] md:w-[108px]" },
+  { src: "/images/illustrations/props/tree.webp", w: 166, h: 193, cls: "right-10 w-[78px] md:w-[92px]" },
+  { src: "/images/illustrations/props/camera.webp", w: 140, h: 184, cls: "right-10 w-[62px] md:w-[74px]" },
+  { src: "/images/illustrations/props/sign.webp", w: 195, h: 167, cls: "right-10 w-[92px] md:w-[108px]" },
 ];
 
 /**
@@ -84,12 +84,12 @@ export function About() {
         >
           <div className="about-drone absolute -left-[4%] -top-[30%] w-[22%] max-w-[150px]">
             <div className="about-drone-bob">
-              <Image src="/illu/drone.webp" alt="" width={234} height={102} className="w-full" />
+              <Image src="/images/illustrations/props/drone.webp" alt="" width={234} height={102} className="w-full" />
             </div>
           </div>
           <div className="relative aspect-[1228/470] w-full">
             <Image
-              src="/illu/tower.webp"
+              src="/images/illustrations/tower.webp"
               alt=""
               width={470}
               height={1228}

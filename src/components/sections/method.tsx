@@ -3,7 +3,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { method } from "@/data/site";
-import { RIBBON_PATH, RIBBON_VIEWBOX } from "@/components/ui/ribbon";
+import { LINE_PIN } from "@/components/ui/ribbon";
 import { MaskLine, Reveal, RevealItem } from "@/components/motion/reveal";
 
 /** The brand ribbon draws itself as you read the four steps: from the visit to the sale. */
@@ -15,9 +15,13 @@ export function Method() {
 
   return (
     <section id="methode" ref={ref} aria-labelledby="method-title" className="relative scroll-mt-20 overflow-hidden bg-ground section-y">
-      <svg aria-hidden viewBox={RIBBON_VIEWBOX} fill="none" className="pointer-events-none absolute left-[-8%] top-[34%] w-[116%]">
-        <path d={RIBBON_PATH} stroke="#EBE5DA" strokeWidth={75} strokeMiterlimit={10} />
-        <motion.path d={RIBBON_PATH} stroke="#FF004F" strokeWidth={75} strokeMiterlimit={10} style={{ pathLength: draw }} />
+      <svg aria-hidden viewBox={LINE_PIN.viewBox} fill="none" className="pointer-events-none absolute left-0 top-[9%] w-full -scale-x-100">
+        {LINE_PIN.paths.map((d) => (
+          <g key={d}>
+            <path d={d} stroke="#EBE5DA" strokeWidth={LINE_PIN.stroke} />
+            <motion.path d={d} stroke="#FF004F" strokeWidth={LINE_PIN.stroke} style={{ pathLength: draw }} />
+          </g>
+        ))}
       </svg>
       <div className="relative wrap">
         <h2 id="method-title" className="font-display max-w-[900px] text-[clamp(36px,6vw,154px)] font-extrabold leading-[0.9] tracking-[-0.05em]">
