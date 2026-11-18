@@ -179,11 +179,6 @@ export const partners = [
   { name: "RB", src: "/partners-clean/rb.svg" },
 ];
 
-/** Screens of the platform shown in the device frames. Replace with real captures of yas-home.com (1440x900). */
-export const platformShots = {
-  desktop: "/works/yashome-og.webp",
-};
-
 export const bridge = {
   title: ["Filmé par le studio.", "Vu sur Yashome."],
   lead: "Le studio est né dans Yashome. Ce qu’on tourne pour vous part directement là où les acheteurs cherchent : la plateforme, vos réseaux et leurs fils d’actualité.",

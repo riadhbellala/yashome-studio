@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { bridge, platformShots } from "@/data/site";
+import { bridge } from "@/data/site";
 import { RIBBON_PATH, RIBBON_VIEWBOX } from "@/components/ui/ribbon";
 import { MaskLine, Reveal, RevealItem } from "@/components/motion/reveal";
 
@@ -49,15 +49,12 @@ export function Bridge() {
             </div>
 
             <div className="relative lg:col-span-6">
-              <motion.div style={{ y: laptopY }} className="relative">
-                {/* screen box measured from the frame: (146,48)-(1214,723) of 1360x837 */}
-                <div className="absolute overflow-hidden bg-white" style={{ left: "10.7%", top: "5.7%", width: "78.6%", height: "80.7%" }}>
-                  <Image src={platformShots.desktop} alt="La plateforme Yashome" fill sizes="(min-width:1024px) 40vw, 90vw" className="object-cover object-top" />
-                </div>
-                <Image src="/brand/mac-frame.webp" alt="" aria-hidden width={1360} height={837} sizes="(min-width:1024px) 40vw, 90vw" className="relative w-full" />
+              <motion.div style={{ y: laptopY }}>
+                <Image src="/brand/device-laptop.webp" alt="Le site Yashome sur un ordinateur portable" width={1360} height={837} sizes="(min-width:1024px) 44vw, 90vw" className="w-full" />
               </motion.div>
-              <motion.div style={{ y: phoneY }} className="absolute bottom-[6%] -left-[4%] w-[34%] -rotate-6">
-                <Image src="/brand/phone.webp" alt="L’application Yashome sur téléphone" width={562} height={531} sizes="16vw" className="w-full" />
+              {/* Whole phone, shorter than the laptop, so the card never clips it */}
+              <motion.div style={{ y: phoneY }} className="absolute bottom-[3%] -left-[3%] w-[23%] -rotate-3">
+                <Image src="/brand/device-phone.webp" alt="Le site Yashome sur un téléphone" width={667} height={1333} sizes="(min-width:1024px) 11vw, 22vw" className="w-full" />
               </motion.div>
             </div>
           </div>

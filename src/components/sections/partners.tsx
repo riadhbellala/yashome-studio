@@ -17,7 +17,6 @@ export function Partners() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const a = useTransform(scrollYProgress, [0, 1], [reduce ? 0 : 80, reduce ? 0 : -80]);
   const b = useTransform(scrollYProgress, [0, 1], [reduce ? 0 : -80, reduce ? 0 : 80]);
-  const row = [...partners, ...partners];
 
   return (
     <section ref={ref} aria-labelledby="partners-title" className="relative overflow-hidden bg-ground section-y">
@@ -39,20 +38,21 @@ export function Partners() {
           {[a, b].map((shift, r) => (
             <motion.div key={r} style={{ x: shift }}>
               <ul className="marquee flex w-max gap-5" style={{ animationDirection: r ? "reverse" : "normal", animationDuration: "52s" }}>
-                {[...row, ...row].map((p, i) => (
+                {/* Two identical halves for the loop; phones need one logo set per half, which keeps the moving layer light */}
+                {[0, 1, 2, 3].map((copy) => partners.map((p, i) => (
                   <li
-                    key={i}
-                    className="group grid h-[130px] w-[230px] shrink-0 place-items-center rounded-[32px] bg-white transition-transform duration-500 ease-[var(--ease-out)] hover:-translate-y-1 md:h-[170px] md:w-[300px]"
+                    key={`${copy}-${i}`}
+                    className={`group grid h-[130px] w-[230px] shrink-0 place-items-center rounded-[32px] bg-white transition-transform duration-500 ease-[var(--ease-out)] hover:-translate-y-1 md:h-[170px] md:w-[300px] ${copy % 2 ? "max-md:hidden" : ""}`}
                   >
                     <Image
                       src={p.src}
-                      alt={i < partners.length ? p.name : ""}
+                      alt={copy === 0 ? p.name : ""}
                       width={220}
                       height={110}
                       className="max-h-[70px] w-auto max-w-[160px] object-contain transition-transform duration-500 ease-[var(--ease-out)] group-hover:scale-105 md:max-h-[92px] md:max-w-[190px]"
                     />
                   </li>
-                ))}
+                )))}
               </ul>
             </motion.div>
           ))}
