@@ -24,7 +24,7 @@ export function Works() {
     const measure = () => {
       const t = track.current;
       if (!t) return;
-      setDist(window.innerWidth >= 1024 && !reduce ? Math.max(0, t.scrollWidth - t.clientWidth) : 0);
+      setDist(window.innerWidth >= 1280 && window.innerHeight >= 700 && !reduce ? Math.max(0, t.scrollWidth - t.clientWidth) : 0);
     };
     measure();
     window.addEventListener("resize", measure);
@@ -33,12 +33,12 @@ export function Works() {
 
   return (
     <section id="realisations" ref={wrap} aria-labelledby="works-title" className="relative bg-ground" style={{ height: dist ? `calc(100vh + ${dist}px)` : undefined }}>
-      <div className="section-y top-0 overflow-hidden lg:sticky lg:flex lg:h-[100vh] lg:flex-col lg:justify-center lg:!py-0">
-        <div className="wrap flex items-end justify-between gap-8">
+      <div className="section-y top-0 overflow-hidden xl:sticky xl:flex xl:h-[100vh] xl:flex-col xl:justify-center xl:!py-0">
+        <div className="wrap flex flex-col justify-between gap-6 md:flex-row md:items-end md:gap-8">
           <h2 id="works-title" className="font-display t-h2">
             <MaskLine>Nos réalisations</MaskLine>
           </h2>
-          <div className="flex flex-col items-start gap-4 pb-2">
+          <div className="flex flex-col items-start gap-4 md:pb-2">
             <p className="hidden max-w-[36ch] text-[17px] leading-[1.6] text-text-gray md:block">
               Films de visite, lancements et reels, tournés pour des agences et des promoteurs.
             </p>
@@ -53,7 +53,7 @@ export function Works() {
           <motion.div
             ref={track}
             style={{ x: dist ? x : 0 }}
-            className="fine:[&:has(article:hover)>article:not(:hover)]:opacity-40 fine:[&:has(article:hover)>article:not(:hover)]:blur-[3px] -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:gap-5 lg:mx-0 lg:snap-none lg:gap-6 lg:overflow-visible lg:px-0"
+            className="fine:[&:has(article:hover)>article:not(:hover)]:opacity-40 fine:[&:has(article:hover)>article:not(:hover)]:blur-[3px] -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:gap-5 xl:mx-0 xl:snap-none xl:gap-6 xl:overflow-visible xl:px-0"
           >
             {list.map((w, i) => (
               <WorkCard key={w.slug} work={w} index={i} />
@@ -86,11 +86,11 @@ function WorkCard({ work, index }: { work: Project; index: number }) {
   }, [reduce]);
 
   return (
-    <article className={`group shrink-0 snap-start transition-[opacity,filter] duration-300 ease-out ${work.vertical ? "w-[64vw] sm:w-[36vw] lg:w-[calc(62vh*0.8)]" : "w-[84vw] sm:w-[60vw] lg:w-[calc(62vh*1.4)]"}`}>
+    <article className={`group shrink-0 snap-start transition-[opacity,filter] duration-300 ease-out ${work.vertical ? "w-[64vw] sm:w-[36vw] xl:w-[calc(62vh*0.8)]" : "w-[84vw] sm:w-[60vw] xl:w-[calc(62vh*1.4)]"}`}>
       <Link href={`/projets/${work.slug}`} aria-label={`Voir le projet ${work.title}`} className="press relative block">
         <SharedMedia slug={work.slug}>
           <span className="relative block w-full overflow-hidden rounded-[var(--radius-card)] bg-second">
-            <span className={`block ${work.vertical ? "aspect-[4/5]" : "aspect-[7/5]"} lg:aspect-auto lg:h-[62vh]`} />
+            <span className={`block ${work.vertical ? "aspect-[4/5]" : "aspect-[7/5]"} xl:aspect-auto xl:h-[62vh]`} />
             {work.preview ? (
               <video
                 ref={video}

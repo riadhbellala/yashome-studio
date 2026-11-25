@@ -25,7 +25,7 @@ export function Departments({ base = "", withProjects = true }: { base?: string;
             <p className="max-w-[36ch] pb-2 text-[17px] leading-[1.6] text-text-gray">Six départements, une seule équipe. Choisissez un dossier pour voir ce qu’on y fait.</p>
           </div>
 
-          <ul className="head-gap grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-12">
+          <ul className="head-gap grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 xl:grid-cols-3 xl:gap-x-10 xl:gap-y-12">
             {departments.map((d, i) => (
               <motion.li
                 key={d.id}
@@ -39,7 +39,7 @@ export function Departments({ base = "", withProjects = true }: { base?: string;
               </motion.li>
             ))}
             <motion.li
-              className="sm:col-span-2 lg:col-span-3"
+              className="md:col-span-2 xl:col-span-3"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -101,7 +101,7 @@ function FolderCard({ dep, index, href }: { dep: Department; index: number; href
           Dossier {n}
         </span>
         {/* Card */}
-        <span className="relative grid h-full grid-cols-[minmax(0,1fr)_40%] gap-5 rounded-[var(--radius-card)] rounded-tl-none bg-white p-5 shadow-[0_1px_2px_rgba(21,21,51,0.04),0_12px_32px_-18px_rgba(21,21,51,0.18)] md:p-6">
+        <span className="relative grid h-full grid-cols-[minmax(0,1fr)_38%] gap-4 sm:gap-5 rounded-[var(--radius-card)] rounded-tl-none bg-white p-5 shadow-[0_1px_2px_rgba(21,21,51,0.04),0_12px_32px_-18px_rgba(21,21,51,0.18)] md:p-6">
           <span className="flex flex-col justify-center py-2">
             <span className="font-display text-[18px] font-extrabold tabular-nums text-main">{n}.</span>
             <h3 className="font-display mt-3 text-[clamp(22px,1.7vw,30px)] font-extrabold leading-[1.05] tracking-[-0.04em] text-second">{dep.name}</h3>

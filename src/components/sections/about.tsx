@@ -113,7 +113,7 @@ export function About() {
       </div>
       </div>
       <div className="wrap relative">
-        <ul className="about-cards mt-24 grid gap-x-5 gap-y-24 md:mt-32 md:grid-cols-3">
+        <ul className="about-cards mt-24 grid gap-x-5 gap-y-24 md:mt-32 md:grid-cols-2 xl:grid-cols-3">
           {about.cards.map((c, i) => (
             <li key={c.title} className="about-card relative">
               <Image
