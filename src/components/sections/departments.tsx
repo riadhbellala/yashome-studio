@@ -10,7 +10,6 @@ import { MaskLine } from "@/components/motion/reveal";
 import { SharedMedia } from "@/components/ui/shared-media";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
-const HEAD = { pink: "#FF004F", navy: "#151533", gold: "#C6B467" } as const;
 const pad = (n: number) => String(n).padStart(2, "0");
 
 /** The index: one small folder per department. `base` is where the folders lead: "" on the projects page, "/realisations" from home. */
@@ -23,34 +22,38 @@ export function Departments({ base = "", withProjects = true }: { base?: string;
             <h2 id="dep-title" className="font-display t-h2">
               <MaskLine>Nos départements</MaskLine>
             </h2>
-            <p className="max-w-[36ch] pb-2 text-[17px] leading-[1.6] text-text-gray">Sept départements, une seule équipe. Choisissez un dossier pour voir ce qu’on y fait.</p>
+            <p className="max-w-[36ch] pb-2 text-[17px] leading-[1.6] text-text-gray">Six départements, une seule équipe. Choisissez un dossier pour voir ce qu’on y fait.</p>
           </div>
 
-          <ul className="head-gap grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="head-gap grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-12">
             {departments.map((d, i) => (
               <motion.li
                 key={d.id}
+                className="h-full"
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6, ease: EASE, delay: (i % 4) * 0.06 }}
+                transition={{ duration: 0.6, ease: EASE, delay: (i % 3) * 0.08 }}
               >
                 <FolderCard dep={d} index={i} href={`${base}#dep-${d.id}`} />
               </motion.li>
             ))}
             <motion.li
+              className="sm:col-span-2 lg:col-span-3"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: EASE, delay: 0.18 }}
+              transition={{ duration: 0.6, ease: EASE }}
             >
-              <a href="#contact" className="press group flex min-h-[220px] h-full flex-col justify-between rounded-[var(--radius-card)] bg-second p-7 text-white sm:aspect-square sm:min-h-0 sm:rounded-[var(--radius-card)]">
-                <span aria-hidden className="grid size-12 place-items-center rounded-full bg-main transition-transform duration-500 ease-[var(--ease-out)] fine:group-hover:rotate-45">
-                  <svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3m0 0H4.5M11 3v6.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                </span>
+              {/* Not sure: one wide line under the folders */}
+              <a href="#contact" className="press group flex flex-col gap-6 rounded-[var(--radius-card)] bg-second p-7 text-white sm:flex-row sm:items-center sm:justify-between md:px-10 md:py-9">
                 <span>
-                  <span className="font-display block t-h4">Pas sûr du dossier ?</span>
-                  <span className="mt-3 block text-[15px] leading-[1.5] text-white/70">Dites-nous ce que vous vendez, on vous oriente.</span>
+                  <span className="font-display block t-h4">Pas sûr du dossier ?</span>
+                  <span className="mt-2 block text-[15px] text-white/75">Dites-nous ce que vous vendez, on vous oriente.</span>
+                </span>
+                <span className="flex items-center gap-4 text-[15px] font-medium">
+                  Nous écrire
+                  <Arrow />
                 </span>
               </a>
             </motion.li>
@@ -63,40 +66,63 @@ export function Departments({ base = "", withProjects = true }: { base?: string;
   );
 }
 
+const PHOTO: Record<string, string> = {
+  shooting: "/folders/shooting.webp",
+  video: "/folders/audio-visuale.webp",
+  social: "/folders/social.webp",
+  branding: "/folders/branding.webp",
+  marketing: "/folders/marketing.webp",
+  dev: "/folders/web.webp",
+};
+
+function Arrow({ light }: { light?: boolean }) {
+  return (
+    <span aria-hidden className={`grid size-10 shrink-0 place-items-center rounded-full transition-[background-color,color,transform] duration-300 ease-[var(--ease-out)] fine:group-hover:rotate-45 ${light ? "bg-white text-main" : "bg-main text-white"}`}>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3m0 0H4.5M11 3v6.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    </span>
+  );
+}
+
 /**
- * Cut like the folder ref: coloured head with the brand ribbon, the department's own drawing tucked
- * in like a sheet that rises when you point at it, a tab notched into the head, the name large below.
+ * A folder like a paper file: a navy tab with a slanted edge on top, a white card below.
+ * Number, name and a short line on the left; the service photo on the right, its top corner
+ * folded, the pink arrow sitting on its foot in a white ring.
  */
 function FolderCard({ dep, index, href }: { dep: Department; index: number; href: string }) {
-  const head = index % 2 ? HEAD.navy : HEAD.pink;
-  const count = dep.creations.length;
+  const n = pad(index + 1);
   return (
-    <a href={href} className="press group flex min-h-[260px] flex-col rounded-[var(--radius-card)] bg-white p-[10px] sm:aspect-square sm:min-h-0">
-      <div className="relative h-[110px] shrink-0 overflow-hidden rounded-[var(--radius-card)] sm:h-[40%]" style={{ background: head }}>
-        <svg aria-hidden viewBox="0 0 2181 491" fill="none" className="absolute -right-[20%] -top-[30%] w-[120%] opacity-20 transition-transform duration-700 ease-[var(--ease-out)] fine:group-hover:-translate-x-[6%]">
-          <path d="M27.5234 88.011C27.5234 88.011 481.481 577.319 830.507 422.7C1179.53 268.081 1047.67 69.5976 899.747 93.8005C806.138 109.117 727.434 230.481 835.787 294.443C944.139 358.404 1539.82 644.49 1624.38 232.942C1708.95 -178.607 2157.1 187.886 2157.1 187.886" stroke="#fff" strokeWidth="75" />
-        </svg>
-        <span className="absolute left-4 top-4 rounded-full bg-white/20 px-3 py-1.5 text-[13px] font-medium text-white">
-          {count} projet{count > 1 ? "s" : ""}
+    <a href={href} className="press group flex h-full flex-col pt-10">
+      <span className="relative block flex-1">
+        {/* Tab */}
+        <span
+          className="absolute -top-10 left-0 flex h-11 w-[46%] items-start bg-second pl-5 pt-3 text-[12px] font-semibold text-white"
+          style={{ clipPath: "polygon(0 0, 82% 0, 100% 100%, 0 100%)", borderTopLeftRadius: 14 }}
+        >
+          Dossier {n}
         </span>
-        {/* The drawing on a white sheet, half tucked in the folder */}
-        <span className="absolute bottom-[-14%] left-5 grid aspect-square h-[82%] translate-y-[4%] place-items-center rounded-[var(--radius-inner)] bg-white transition-transform duration-500 ease-[var(--ease-out)] fine:group-hover:-translate-y-[8%] fine:group-hover:-rotate-3">
-          <Image src={dep.icon} alt="" width={120} height={120} className="h-[72%] w-auto" />
+        {/* Card */}
+        <span className="relative grid h-full grid-cols-[minmax(0,1fr)_40%] gap-5 rounded-[var(--radius-card)] rounded-tl-none bg-white p-5 shadow-[0_1px_2px_rgba(21,21,51,0.04),0_12px_32px_-18px_rgba(21,21,51,0.18)] md:p-6">
+          <span className="flex flex-col justify-center py-2">
+            <span className="font-display text-[18px] font-extrabold tabular-nums text-main">{n}.</span>
+            <h3 className="font-display mt-3 text-[clamp(22px,1.7vw,30px)] font-extrabold leading-[1.05] tracking-[-0.04em] text-second">{dep.name}</h3>
+            <span className="mt-4 block text-[14px] leading-[1.6] text-text-gray">{dep.blurb}</span>
+          </span>
+          <span className="relative aspect-[3/4]">
+            <span className="absolute inset-0 overflow-hidden rounded-[var(--radius-inner)] bg-second" style={{ clipPath: "polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%)" }}>
+              <Image
+                src={PHOTO[dep.id] ?? dep.cover}
+                alt=""
+                fill
+                sizes="(min-width:1024px) 14vw, (min-width:640px) 20vw, 38vw"
+                className="object-cover transition-transform duration-[1100ms] ease-[var(--ease-out)] fine:group-hover:scale-[1.06]"
+              />
+            </span>
+            <span className="absolute -bottom-2 -right-2 rounded-full bg-white p-1">
+              <Arrow />
+            </span>
+          </span>
         </span>
-        <div className="absolute bottom-0 right-0 flex h-[42%] items-center gap-2 rounded-tl-[24px] bg-white pl-5 pr-5">
-          <span aria-hidden className="absolute -left-[24px] bottom-0 size-[24px]" style={{ background: "radial-gradient(circle at 0 0, transparent 24px, #fff 24.5px)" }} />
-          <span aria-hidden className="absolute -top-[24px] right-0 size-[24px]" style={{ background: "radial-gradient(circle at 0 0, transparent 24px, #fff 24.5px)" }} />
-          <span className="text-[14px] text-text-gray">dossier</span>
-          <span className="font-display t-h4 leading-none text-second">{pad(index + 1)}</span>
-        </div>
-      </div>
-      <div className="flex flex-1 flex-col justify-between px-5 pb-5 pt-6 md:px-6">
-        <h3 className="font-display mb-6 t-h4 text-second">{dep.name}</h3>
-        <p className="flex items-center justify-between gap-3 text-[15px] text-text-gray">
-          {dep.tagline}
-          <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-ground text-second transition-[background-color,color,transform] duration-300 ease-[var(--ease-out)] fine:group-hover:-rotate-45 fine:group-hover:bg-main fine:group-hover:text-white">→</span>
-        </p>
-      </div>
+      </span>
     </a>
   );
 }
@@ -175,8 +201,7 @@ function DepartmentIndex() {
     row.scrollTo({ left: el.offsetLeft - (row.clientWidth - el.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
   }, [active, reduce]);
 
-  const grid =
-    list.length === 1 ? "grid-cols-1" : list.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[auto_auto]";
+  const grid = "grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
 
   return (
     <section aria-labelledby="dep-index-title" className="bg-ground section-y !pt-0">
@@ -228,12 +253,12 @@ function DepartmentIndex() {
                 </div>
               </header>
 
-              <ul className={`mt-10 grid gap-5 ${grid}`}>
+              <ul className={`mt-10 grid gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10 ${grid}`}>
                 {list.map((c, i) => {
-                  const big = list.length >= 3 && i === 0;
+                  const big = false;
                   return (
-                    <li key={c.title + i} className={big ? "lg:col-span-2 lg:row-span-2" : ""}>
-                      <Tile c={c} big={big} sizes={big ? "(min-width:1024px) 62vw, 92vw" : "(min-width:1024px) 30vw, (min-width:640px) 46vw, 92vw"} />
+                    <li key={c.title + i}>
+                      <Tile c={c} big={big} sizes="(min-width:1024px) 22vw, (min-width:768px) 30vw, 46vw" />
                     </li>
                   );
                 })}

@@ -107,7 +107,7 @@ export function About() {
             </MaskLine>
           </h2>
           <span aria-hidden className="about-bar mt-8 block h-[6px] w-[min(100%,560px)] rounded-full bg-main" />
-          <p className="mt-8 max-w-[640px] text-[17px] leading-[1.65] ">{about.lead}</p>
+          <p className="mt-8 max-w-[640px] text-[17px] leading-[1.6]">{about.lead}</p>
         </div>
 
       </div>

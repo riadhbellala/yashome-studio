@@ -21,7 +21,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Yashome Studio — Shooting, drone et publicité immobilière",
   description:
-    "Le studio digital de Yashome : shooting photo, vidéo, drone, visite 360° et publicité pour les agences immobilières et les promoteurs en Algérie.",
+    "Le studio digital de Yashome : shooting photo, vidéo, drone, branding et publicité pour les agences immobilières et les promoteurs en Algérie.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

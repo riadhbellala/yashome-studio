@@ -1,9 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { works, type Work } from "@/data/site";
+import { featured, getProject, type Project } from "@/data/site";
+
+const list = featured.map(getProject).filter((p): p is Project => !!p);
 import { MaskLine } from "@/components/motion/reveal";
 import { SharedMedia } from "@/components/ui/shared-media";
 
@@ -52,8 +55,8 @@ export function Works() {
             style={{ x: dist ? x : 0 }}
             className="fine:[&:has(article:hover)>article:not(:hover)]:opacity-40 fine:[&:has(article:hover)>article:not(:hover)]:blur-[3px] -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:gap-5 lg:mx-0 lg:snap-none lg:gap-6 lg:overflow-visible lg:px-0"
           >
-            {works.map((w, i) => (
-              <WorkCard key={w.id} work={w} index={i} />
+            {list.map((w, i) => (
+              <WorkCard key={w.slug} work={w} index={i} />
             ))}
           </motion.div>
 
@@ -70,7 +73,7 @@ export function Works() {
 }
 
 /** Silent loop that only plays while the card is on screen. */
-function WorkCard({ work, index }: { work: Work; index: number }) {
+function WorkCard({ work, index }: { work: Project; index: number }) {
   const video = useRef<HTMLVideoElement>(null);
   const reduce = useReducedMotion();
 
@@ -84,28 +87,44 @@ function WorkCard({ work, index }: { work: Work; index: number }) {
 
   return (
     <article className={`group shrink-0 snap-start transition-[opacity,filter] duration-300 ease-out ${work.vertical ? "w-[64vw] sm:w-[36vw] lg:w-[calc(62vh*0.8)]" : "w-[84vw] sm:w-[60vw] lg:w-[calc(62vh*1.4)]"}`}>
-      <Link href={`/projets/${work.id}`} aria-label={`Voir le projet ${work.title}`} className="press relative block">
-        <SharedMedia slug={work.id}>
+      <Link href={`/projets/${work.slug}`} aria-label={`Voir le projet ${work.title}`} className="press relative block">
+        <SharedMedia slug={work.slug}>
           <span className="relative block w-full overflow-hidden rounded-[var(--radius-card)] bg-second">
             <span className={`block ${work.vertical ? "aspect-[4/5]" : "aspect-[7/5]"} lg:aspect-auto lg:h-[62vh]`} />
-            <video
-              ref={video}
-              src={work.preview}
-              poster={work.poster}
-              muted
-              loop
-              playsInline
-              preload="none"
-              aria-hidden
-              className="absolute inset-0 size-full object-cover transition-transform duration-[900ms] ease-[var(--ease-out)] fine:group-hover:scale-[1.03]"
-            />
+            {work.preview ? (
+              <video
+                ref={video}
+                src={work.preview}
+                poster={work.poster}
+                muted
+                loop
+                playsInline
+                preload="none"
+                aria-hidden
+                className="absolute inset-0 size-full object-cover transition-transform duration-[900ms] ease-[var(--ease-out)] fine:group-hover:scale-[1.03]"
+              />
+            ) : (
+              work.poster && (
+                <Image
+                  src={work.poster}
+                  alt={`${work.title}, ${work.kind}`}
+                  fill
+                  sizes="(min-width:1024px) 60vw, 84vw"
+                  className="object-cover transition-transform duration-[900ms] ease-[var(--ease-out)] fine:group-hover:scale-[1.03]"
+                />
+              )
+            )}
           </span>
         </SharedMedia>
         <span className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-3.5 text-[13px] font-medium text-second">
           <span className="grid size-6 place-items-center rounded-full bg-main text-white">
-            <svg width="9" height="10" viewBox="0 0 9 10" fill="currentColor" aria-hidden><path d="M0 0.8v8.4a.6.6 0 0 0 .9.5l7.3-4.2a.6.6 0 0 0 0-1L.9.3A.6.6 0 0 0 0 .8Z" /></svg>
+            {work.preview ? (
+              <svg width="9" height="10" viewBox="0 0 9 10" fill="currentColor" aria-hidden><path d="M0 0.8v8.4a.6.6 0 0 0 .9.5l7.3-4.2a.6.6 0 0 0 0-1L.9.3A.6.6 0 0 0 0 .8Z" /></svg>
+            ) : (
+              <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden><path d="M3 11L11 3m0 0H4.5M11 3v6.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            )}
           </span>
-          Voir le projet
+          {work.preview ? "Voir le film" : "Voir le projet"}
         </span>
       </Link>
       <div className="mt-4 flex items-baseline justify-between gap-4">

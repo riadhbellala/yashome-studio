@@ -9,7 +9,7 @@ import { MaskLine } from "@/components/motion/reveal";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
 const PROPERTIES = ["Villa", "Appartement", "Résidence", "Projet sur plan"];
-const NEEDS = ["Shooting photo", "Vidéo & reels", "Drone", "Visite 360°", "Publicité", "Identité"];
+const NEEDS = ["Shooting photo", "Vidéo & reels", "Drone", "Publicité", "Identité"];
 
 function Chip({ label, on, onClick }: { label: string; on: boolean; onClick: () => void }) {
   return (

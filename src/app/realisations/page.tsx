@@ -6,7 +6,7 @@ import { Contact } from "@/components/sections/contact";
 
 export const metadata: Metadata = {
   title: "Réalisations — Yashome Studio",
-  description: "Tous les projets du studio, classés par département : shooting, drone, vidéo, visite 360° et publicité.",
+  description: "Tous les projets du studio, classés par département : shooting, vidéo, réseaux sociaux, branding et publicité.",
 };
 
 export default function Realisations() {

@@ -18,7 +18,7 @@ export function Audiences() {
             >
               <div>
                 <h3 className="font-display t-h3">{a.name}</h3>
-                <p className="mt-5 max-w-[420px] text-[17px] leading-[1.5] text-white/85">{a.lead}</p>
+                <p className="mt-5 max-w-[420px] text-[17px] leading-[1.6] text-white/85">{a.lead}</p>
               </div>
               <ul className="mt-12 grid gap-3">
                 {a.points.map((p) => (

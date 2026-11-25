@@ -4,9 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Contact } from "@/components/sections/contact";
 import { SharedMedia } from "@/components/ui/shared-media";
 import { Button } from "@/components/ui/button";
+import { SectionNav } from "@/components/ui/section-nav";
 import { getProject, projects, type Project } from "@/data/site";
 
 export function generateStaticParams() {
@@ -19,9 +19,10 @@ export async function generateMetadata({ params }: PageProps<"/projets/[slug]">)
 }
 
 const TONE = { pink: "bg-main", navy: "bg-second", gold: "bg-third", sand: "bg-sand" } as const;
+const illu = (src?: string) => !!src?.startsWith("/images/illustrations");
 
-/** The project's picture, the same one as on its card, so the morph lands on it. */
-function Media({ p, priority }: { p: Project; priority?: boolean }) {
+/** The hero: the full film, or the cover picture at its own proportions. */
+function Hero({ p }: { p: Project }) {
   if (p.film)
     return (
       <video
@@ -30,42 +31,46 @@ function Media({ p, priority }: { p: Project; priority?: boolean }) {
         controls
         playsInline
         preload="none"
-        className={`block w-full rounded-[var(--radius-card)] bg-second object-cover ${p.vertical ? "aspect-[4/5] max-h-[78vh] md:aspect-[9/14]" : "aspect-video"}`}
+        className={`mx-auto block rounded-[var(--radius-card)] bg-second object-cover ${p.vertical ? "aspect-[9/16] max-h-[72vh] w-auto" : "aspect-video w-full"}`}
       />
     );
+  if (!p.poster) return <div className={`aspect-[16/9] rounded-[var(--radius-card)] ${TONE[p.tone]}`} />;
   return (
-    <div className={`relative aspect-[16/10] overflow-hidden rounded-[var(--radius-card)] ${p.poster ? "bg-second" : TONE[p.tone]}`}>
-      {p.poster ? (
-        <Image
-          src={p.poster}
-          alt={`${p.title}, ${p.kind}`}
-          fill
-          priority={priority}
-          sizes="(min-width:1024px) 66vw, 100vw"
-          className={p.poster.startsWith("/images/illustrations") ? "bg-[#fbe4ec] object-contain p-[6%]" : "object-cover"}
-        />
-      ) : (
-        <span className="absolute left-6 top-6 text-[13px] font-medium text-white/80">Visuel à venir</span>
-      )}
-    </div>
+    <Image
+      src={p.poster}
+      alt={`${p.title}, ${p.kind}`}
+      width={1800}
+      height={1200}
+      priority
+      sizes="(min-width:1504px) 1380px, 94vw"
+      className={`mx-auto block h-auto max-h-[68vh] w-auto max-w-full rounded-[var(--radius-card)] ${illu(p.poster) ? "bg-[#fbe4ec] p-[6%]" : ""}`}
+    />
   );
 }
 
-/** Small linked thumbnail, used for related and neighbour projects. */
-function Thumb({ p, className = "", bare }: { p: Project; className?: string; bare?: boolean }) {
+/** Linked picture for the next project. */
+function Thumb({ p, className = "" }: { p: Project; className?: string }) {
   return (
     <SharedMedia slug={p.slug}>
-      <span className={`relative block overflow-hidden rounded-[var(--radius-inner)] ${p.poster ? "bg-second" : TONE[p.tone]} ${className}`}>
-        {p.poster ? (
-          <Image src={p.poster} alt="" fill sizes="(min-width:1024px) 28vw, 90vw" className={`transition-transform duration-[900ms] ease-[var(--ease-out)] fine:group-hover:scale-[1.04] ${p.poster.startsWith("/images/illustrations") ? "bg-[#fbe4ec] object-contain p-[6%]" : "object-cover"}`} />
-        ) : bare ? null : (
-          <span className="absolute left-4 top-4 text-[12px] font-medium text-white/80">Visuel à venir</span>
+      <span className={`relative block overflow-hidden rounded-[var(--radius-card)] ${p.poster ? "bg-second" : TONE[p.tone]} ${className}`}>
+        {p.poster && (
+          <Image
+            src={p.poster}
+            alt=""
+            fill
+            sizes="(min-width:1024px) 50vw, 94vw"
+            className={`transition-transform duration-[1100ms] ease-[var(--ease-out)] fine:group-hover:scale-[1.04] ${illu(p.poster) ? "bg-[#fbe4ec] object-contain p-[6%]" : "object-cover"}`}
+          />
         )}
       </span>
     </SharedMedia>
   );
 }
 
+/**
+ * Laid out like an agency case study: title and facts, a short contents bar, the hero, an intro,
+ * the objective and what we did, every picture in a calm rhythm, the service, then what comes next.
+ */
 export default async function ProjectPage({ params }: PageProps<"/projets/[slug]">) {
   const { slug } = await params;
   const p = getProject(slug);
@@ -75,118 +80,125 @@ export default async function ProjectPage({ params }: PageProps<"/projets/[slug]
   const n = projects.length;
   const prev = projects[(i - 1 + n) % n];
   const next = projects[(i + 1) % n];
-  const related = projects.filter((r) => r.department && r.department === p.department && ![p, prev, next].includes(r)).slice(0, 3);
+  const dep = p.department;
+  const media = (p.gallery ?? []).filter((src) => src !== p.poster);
+
   const facts = [
     { k: "Client", v: p.client },
-    { k: "Lieu", v: p.place },
-    { k: "Département", v: p.department?.name ?? "Production audiovisuelle" },
+    { k: "Catégorie", v: dep?.name ?? "Production audiovisuelle" },
     { k: "Format", v: p.kind },
+    { k: "Lieu", v: p.place },
   ];
+  const nav = [
+    { id: "objectif", label: "L’objectif" },
+    { id: "contribution", label: "Notre contribution" },
+    ...(media.length ? [{ id: "medias", label: "Médias" }] : []),
+    ...(dep ? [{ id: "services", label: "Services" }] : []),
+  ];
+  const total = media.length + 1;
+  /** One row: title on the left third, text on the right. */
+  const row = "grid gap-4 border-t border-second/10 pt-8 md:grid-cols-3 md:gap-8";
 
   return (
     <>
       <Header />
       <main id="top" className="pt-[76px]">
-        <article className="wrap pb-[var(--sy)] pt-8 md:pt-12">
-          {/* Top bar: way back, and where we are in the list */}
-          <div className="flex items-center justify-between border-b border-second/10 pb-5 text-[14px] font-medium">
-            <Link href="/realisations" className="press inline-flex items-center gap-2 text-text-gray transition-colors hover:text-second">
+        <div className="wrap grid gap-12 pb-[var(--sy)] pt-8 md:pt-12 lg:grid-cols-12 lg:gap-x-12">
+          {/* Sidebar: stays while the work scrolls */}
+          <aside className="lg:sticky lg:top-28 lg:col-span-3 lg:self-start">
+            <Link href="/realisations" className="press inline-flex items-center gap-2 text-[15px] text-text-gray transition-colors hover:text-second">
               <span aria-hidden>←</span> Toutes les réalisations
             </Link>
-            <span className="tabular-nums text-text-gray">
-              <span className="text-second">{String(i + 1).padStart(2, "0")}</span> / {String(n).padStart(2, "0")}
-            </span>
-          </div>
-
-          <div className="mt-10 grid gap-12 lg:mt-14 lg:grid-cols-12 lg:gap-x-10">
-            {/* Facts: stay in view while the picture scrolls */}
-            <aside className="lg:sticky lg:top-28 lg:col-span-4 lg:self-start">
-              <p className="flex items-center gap-3 text-[14px] font-medium">
-                <span className="text-main">{p.kind}</span>
-                <span aria-hidden className="h-px w-8 bg-second/20" />
-                <span className="text-text-gray">{p.place}</span>
-              </p>
-              <h1 className="font-display t-h3 mt-5">{p.title}</h1>
-              <p className="mt-5 max-w-[44ch] text-[17px] leading-[1.6] text-text-gray">
-                {p.department?.definition ?? "Un film tourné et monté par le studio, publié sur Yashome et sur les réseaux du client."}
-              </p>
-
-              <dl className="mt-10 grid grid-cols-2 border-t border-second/10">
-                {facts.map((f, k) => (
-                  <div key={f.k} className={`border-b border-second/10 py-4 ${k % 2 ? "pl-5" : "pr-5"}`}>
-                    <dt className="text-[13px] text-text-gray">{f.k}</dt>
-                    <dd className="mt-1.5 text-[15px] font-medium">{f.v}</dd>
-                  </div>
-                ))}
-              </dl>
-
-              {p.department && (
-                <div className="mt-8">
-                  <p className="text-[13px] text-text-gray">Ce qu’on a fait</p>
-                  <ul className="mt-3 flex flex-wrap gap-2">
-                    {p.department.items.map((it) => (
-                      <li key={it} className="rounded-full bg-white px-3.5 py-1.5 text-[13px] font-medium">{it}</li>
-                    ))}
-                  </ul>
+            <h1 className="font-display mt-8 text-[clamp(30px,2.5vw,44px)] font-extrabold leading-[1.02] tracking-[-0.045em] [overflow-wrap:anywhere]">{p.title}</h1>
+            <dl className="mt-8 border-b border-second/10">
+              {facts.map((f) => (
+                <div key={f.k} className="grid grid-cols-[96px_1fr] gap-4 border-t border-second/10 py-3.5 text-[15px]">
+                  <dt className="text-text-gray">{f.k}</dt>
+                  <dd className="font-medium">{f.v}</dd>
                 </div>
-              )}
-
-              <Button href="#contact" className="mt-10 max-sm:w-full">{p.department?.cta ?? "Démarrer un projet"}</Button>
-            </aside>
-
-            {/* The picture or film, as large as the column allows */}
-            <div className="order-first lg:order-none lg:col-span-8">
-              <div className={p.vertical ? "mx-auto max-w-[480px]" : ""}>
-                <SharedMedia slug={p.slug}>
-                  <div>
-                    <Media p={p} priority />
-                  </div>
-                </SharedMedia>
-              </div>
+              ))}
+            </dl>
+            <div className="mt-10 hidden pl-4 lg:block">
+              <SectionNav items={nav} />
             </div>
-          </div>
+          </aside>
 
-          {related.length > 0 && (
-            <section aria-labelledby="related-title" className="mt-[var(--sy)]">
-              <div className="flex items-end justify-between gap-6">
-                <h2 id="related-title" className="font-display t-h4">Du même département</h2>
-                <Link href="/realisations" className="text-[14px] font-medium text-text-gray transition-colors hover:text-second">Tout voir</Link>
+          {/* The work */}
+          <article className="lg:col-span-9">
+            <SharedMedia slug={p.slug}>
+              <div>
+                <Hero p={p} />
               </div>
-              <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {related.map((r) => (
-                  <li key={r.slug}>
-                    <Link href={`/projets/${r.slug}`} className="press group block">
-                      <Thumb p={r} className="aspect-[4/3]" />
-                      <span className="mt-3 flex justify-between gap-4 text-[14px]">
-                        <span className="font-medium">{r.title}</span>
-                        <span className="text-text-gray">{r.kind}</span>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+            </SharedMedia>
 
-          {/* Neighbours */}
-          <nav aria-label="Autres projets" className="mt-[var(--sy)] grid gap-px overflow-hidden rounded-[var(--radius-card)] bg-second/10 sm:grid-cols-2">
-            {[
-              { p: prev, label: "Projet précédent", arrow: "←" },
-              { p: next, label: "Projet suivant", arrow: "→" },
-            ].map(({ p: q, label, arrow }, k) => (
-              <Link key={label} href={`/projets/${q.slug}`} className={`press group flex items-center gap-5 bg-white p-5 md:p-6 ${k ? "sm:flex-row-reverse sm:text-right" : ""}`}>
-                <Thumb p={q} bare className="aspect-square w-20 shrink-0 md:w-24" />
-                <span className="min-w-0 flex-1">
-                  <span className="text-[13px] text-text-gray">
-                    {k ? `${label} ${arrow}` : `${arrow} ${label}`}
-                  </span>
-                  <span className="font-display t-h4 mt-1 block truncate transition-colors duration-200 fine:group-hover:text-main">{q.title}</span>
+            <p className="mt-10 max-w-[62ch] text-[17px] leading-[1.6]">
+              {p.kind} pour {p.client}. {dep?.definition ?? "Un film tourné et monté par le studio, publié sur Yashome et sur les réseaux du client."}
+            </p>
+
+            <section id="objectif" className={`mt-16 scroll-mt-28 ${row}`}>
+              <h2 className="font-display t-h5 md:text-[26px]">L’objectif</h2>
+              <p className="text-[16px] leading-[1.65] text-text-gray md:col-span-2">
+                Donner à {p.title} une image à la hauteur du projet, claire et cohérente sur chaque support, et la placer devant les bons acheteurs.
+              </p>
+            </section>
+
+            <section id="contribution" className={`mt-16 scroll-mt-28 ${row}`}>
+              <h2 className="font-display t-h5 md:text-[26px]">Notre contribution</h2>
+              <p className="text-[16px] leading-[1.65] text-text-gray md:col-span-2">
+                {dep ? `${dep.items.join(", ")}.` : "Tournage, montage, étalonnage et diffusion."} Du premier brief jusqu’aux fichiers prêts à imprimer ou à publier.
+              </p>
+            </section>
+
+            {media.length > 0 && (
+              <section id="medias" aria-labelledby="medias-title" className="mt-16 scroll-mt-28 border-t border-second/10 pt-8">
+                <h2 id="medias-title" className="font-display t-h5 md:text-[26px]">Médias</h2>
+                <ul className="mt-8 flex flex-col gap-10">
+                  {media.map((src, k) => (
+                    <li key={src} className="relative mx-auto w-fit max-w-full overflow-hidden rounded-[var(--radius-card)]">
+                      <Image src={src} alt={`${p.title}, visuel ${k + 2}`} width={1800} height={1200} sizes="(min-width:1024px) 60vw, 94vw" className="block h-auto max-h-[64vh] w-auto max-w-full" />
+                      <span className="absolute bottom-4 right-4 rounded-full bg-white/90 px-3 py-1 text-[13px] font-medium tabular-nums text-second">
+                        {String(k + 2).padStart(2, "0")} / {String(total).padStart(2, "0")}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {dep && (
+              <section id="services" className={`mt-16 scroll-mt-28 ${row}`}>
+                <h2 className="font-display t-h5 md:text-[26px]">Services</h2>
+                <Link href={`/realisations#dep-${dep.id}`} className="press group block md:col-span-2">
+                  <span className="font-display block text-[20px] font-extrabold tracking-[-0.03em] transition-colors fine:group-hover:text-main">{dep.name} →</span>
+                  <span className="mt-2 block text-[16px] leading-[1.65] text-text-gray">{dep.blurb}</span>
+                </Link>
+              </section>
+            )}
+
+            {/* Next up */}
+            <section aria-labelledby="next-title" className="mt-16 border-t border-second/10 pt-8">
+              <Link href={`/projets/${next.slug}`} className="press group grid items-end gap-6 md:grid-cols-3 md:gap-8">
+                <span>
+                  <span className="text-[14px] text-text-gray">Projet suivant</span>
+                  <span id="next-title" className="font-display mt-2 block text-[clamp(26px,2.4vw,40px)] font-extrabold leading-[1.05] tracking-[-0.04em] transition-colors duration-200 fine:group-hover:text-main">{next.title}</span>
+                  <span className="mt-2 block text-[15px] text-text-gray">{next.kind} · {next.client}</span>
                 </span>
+                <Thumb p={next} className="aspect-[16/9] md:col-span-2" />
               </Link>
-            ))}
-          </nav>
-        </article>
-        <Contact />
+            </section>
+
+            <section className="mt-16 flex flex-col items-start justify-between gap-6 rounded-[var(--radius-card)] bg-second p-8 text-white md:flex-row md:items-center md:p-10">
+              <h2 className="font-display t-h4 max-w-[20ch]">Un projet comme celui-ci ?</h2>
+              <Button href="/#contact">Démarrer un projet</Button>
+            </section>
+
+            <nav aria-label="Autres projets" className="mt-8 flex items-center justify-between gap-4 text-[14px] font-medium">
+              <Link href={`/projets/${prev.slug}`} className="press min-w-0 truncate text-text-gray transition-colors hover:text-second">← {prev.title}</Link>
+              <Link href="/realisations" className="press shrink-0 rounded-full bg-white px-4 py-2">Tous les projets</Link>
+              <Link href={`/projets/${next.slug}`} className="press min-w-0 truncate text-right text-text-gray transition-colors hover:text-second">{next.title} →</Link>
+            </nav>
+          </article>
+        </div>
       </main>
       <Footer />
     </>

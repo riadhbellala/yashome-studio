@@ -15,7 +15,7 @@ export const hero = {
   line: "Shooting, drone, vidéo et publicité pour les agences immobilières et les promoteurs. On met vos biens en scène, Yashome les met devant les acheteurs.",
   primary: { label: "Démarrer un projet", href: "#contact" },
   secondary: { label: "Voir les réalisations", href: "/realisations" },
-  tags: ["Shooting photo", "Drone 4K", "Reels", "Visite 360°", "Ads"],
+  tags: ["Shooting photo", "Drone 4K", "Reels", "Branding", "Ads"],
 };
 
 export const statement =
@@ -23,7 +23,21 @@ export const statement =
 
 export type Tone = "pink" | "navy" | "gold" | "sand";
 
-export type Creation = { title: string; kind: string; image?: string; tone: Tone };
+export type Creation = {
+  title: string;
+  kind: string;
+  image?: string;
+  tone: Tone;
+  client?: string;
+  vertical?: boolean;
+  /** Every picture of the project, shown on its page. */
+  gallery?: string[];
+};
+
+/** Picked pictures of a folder, by number. The first one is the cover. */
+const G = (folder: string, nums: number[]) => nums.map((n) => `/projects/${folder}/${folder}-${String(n).padStart(2, "0")}.webp`);
+/** A printed or social project: cover is the first picture of its gallery. */
+const job = (title: string, kind: string, client: string, gallery: string[], tone: Tone, vertical = false): Creation => ({ title, kind, client, image: gallery[0], gallery, tone, vertical });
 
 export type Department = {
   id: string;
@@ -37,6 +51,8 @@ export type Department = {
   icon: string;
   head: "pink" | "navy" | "gold";
   creations: Creation[];
+  /** One short line for the folder card. */
+  blurb: string;
 };
 
 const ILLU = { villa: "/images/works/villa.webp", appart: "/images/works/appartment.webp", photo: "/images/works/residence.webp", campaign: "/images/works/yashome-og.webp", villa2: "/images/illustrations/villa.webp", building: "/images/illustrations/building.webp" };
@@ -45,6 +61,7 @@ const ILLU = { villa: "/images/works/villa.webp", appart: "/images/works/appartm
 export const departments: Department[] = [
   {
     id: "shooting",
+    blurb: "Photos HDR et compositions soignées pour sublimer chaque bien.",
     tagline: "La première impression.",
     cta: "Réserver un shooting",
     icon: "/images/departments/shooting.webp",
@@ -62,6 +79,7 @@ export const departments: Department[] = [
   },
   {
     id: "video",
+    blurb: "Films de visite, drone et reels qui racontent l’essence d’un lieu.",
     tagline: "Le bien en mouvement.",
     cta: "Lancer un tournage",
     icon: "/images/departments/video.webp",
@@ -72,12 +90,17 @@ export const departments: Department[] = [
     cover: ILLU.villa,
     creations: [
       { title: "Riff Promotion", kind: "Film de lancement", image: "/videos/riff-promotion.jpg", tone: "navy" },
+      { title: "F4 Canastel", kind: "Film de visite", image: "/videos/canastel.jpg", tone: "sand" },
+      { title: "F5 Millenium", kind: "Film de visite", image: "/videos/millenium.jpg", tone: "sand" },
       { title: "Résidence Safwa", kind: "Collage vidéo", image: "/videos/safwa.jpg", tone: "pink" },
       { title: "Montazah", kind: "Reel", image: "/videos/montazah.jpg", tone: "gold" },
+      { title: "Logis", kind: "Reel", image: "/videos/logis.jpg", tone: "gold" },
+      { title: "Série de reels", kind: "Reels", image: "/videos/riff-reels.jpg", tone: "navy" },
     ],
   },
   {
     id: "social",
+    blurb: "Contenus et gestion de vos comptes, chaque semaine.",
     tagline: "Présents chaque semaine.",
     cta: "Confier nos réseaux",
     icon: "/images/departments/social.webp",
@@ -87,13 +110,13 @@ export const departments: Department[] = [
     items: ["Gestion des comptes", "Calendrier éditorial", "Création de contenus", "Community management"],
     cover: ILLU.campaign,
     creations: [
-      { title: "Yashome", kind: "Campagne de lancement", image: ILLU.campaign, tone: "navy" },
-      { title: "Agence Les Clés d’Oran", kind: "Posts et stories", tone: "pink" },
-      { title: "Résidence Les Pins", kind: "Série de reels", tone: "sand" },
+      job("Posts Riff Promotion", "Instagram", "Riff Promotion", G("social-riff", [3, 1, 2, 4, 5, 6, 7, 8, 9, 10]), "navy", true),
+      job("Posts Enjoy Prom", "Instagram et vœux", "Enjoy Prom", G("social-enjoy", [4, 5, 1, 2, 3]), "gold"),
     ],
   },
   {
     id: "branding",
+    blurb: "Identités, supports imprimés et packaging qui marquent les esprits.",
     tagline: "Le visage du projet.",
     cta: "Créer une identité",
     icon: "/images/departments/branding.webp",
@@ -103,12 +126,24 @@ export const departments: Department[] = [
     items: ["Identité de marque", "Charte graphique", "Panneaux de chantier", "Brochures digitales"],
     cover: ILLU.appart,
     creations: [
-      { title: "Projet Belle Vue", kind: "Identité du projet", image: ILLU.appart, tone: "gold" },
-      { title: "Agence Medina Immo", kind: "Logo et charte", tone: "navy" },
+      job("Calendrier 2026", "Calendrier", "Sidi Attallah", G("calendriers", [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]), "pink"),
+      job("Résidence El Hachemi", "Dépliants", "CH Prom", G("depliants", [6, 7, 1, 2, 3, 4, 8]), "gold"),
+      job("Résidence Al Amwaj", "Dépliant", "Riff Promotion", G("depliants", [9, 10]), "navy"),
+      job("Dépliant Logis", "Dépliant", "Logis Promotion", G("depliants", [5]), "sand"),
+      job("Résidence Lumière", "Dépliant", "Immorina", G("depliants", [11]), "navy"),
+      job("BTPM Construction", "Identité visuelle", "E.U.R.L BTPM", G("identite", [3, 2, 4]), "gold"),
+      job("Tulip", "Identité visuelle", "Tulip Promotion", G("identite", [1]), "navy"),
+      job("HB Habitat", "Porte-documents et cartes", "HB Habitat", [...G("porte-docs", [1, 2, 3]), ...G("identite", [6])], "sand"),
+      job("R&A", "Cartes de visite", "R&A", G("identite", [5]), "pink"),
+      job("El Bayrak", "Carnets", "El Bayrak", G("identite", [7]), "navy"),
+      job("Sac Sidi Attallah", "Packaging", "Sidi Attallah", G("sacs", [3]), "gold"),
+      job("Sac Palais d’Or", "Packaging", "Palais d’Or", G("sacs", [1]), "pink"),
+      job("Sac Nad Plaza", "Packaging", "Nad Plaza", G("sacs", [2]), "sand"),
     ],
   },
   {
     id: "marketing",
+    blurb: "Affichage et campagnes ciblées qui convertissent en visites.",
     tagline: "Devant les bons acheteurs.",
     cta: "Lancer une campagne",
     icon: "/images/departments/marketing.webp",
@@ -118,24 +153,17 @@ export const departments: Department[] = [
     items: ["Étude et ciblage", "Campagnes Meta & Google", "Mise en avant Yashome", "Rapport chaque semaine"],
     cover: ILLU.campaign,
     creations: [
-      { title: "Les Terrasses du Front de mer", kind: "Campagne Meta", tone: "pink" },
-      { title: "Résidence Les Pins", kind: "Annonce à la une", image: ILLU.photo, tone: "navy" },
+      job("Stand CH Prom", "Backlights", "CH Prom", G("backlights", [1, 2, 7, 8]), "navy", true),
+      job("Promotion Assas", "Backlights et roll-up", "Promotion Assas", [...G("backlights", [3, 4, 5, 6]), ...G("roll-up", [2, 3])], "navy", true),
+      job("Nad Plaza", "Roll-up", "Nad Plaza", G("roll-up", [1, 4, 8]), "gold", true),
+      job("Résidence Alisé", "Roll-up", "Logis Promotion", G("roll-up", [6, 7, 5]), "sand", true),
+      job("Affiches El Hachemi", "Affiches", "CH Prom", G("affiches", [3, 4, 1]), "navy", true),
+      job("Enjoy Prom × Yashome", "Affiche", "Enjoy Prom", G("affiches", [2]), "pink", true),
     ],
   },
   {
-    id: "visite",
-    tagline: "Visiter sans se déplacer.",
-    cta: "Créer une visite 360°",
-    icon: "/images/departments/visite.webp",
-    head: "gold",
-    name: "Visite virtuelle 360°",
-    definition: "L’acheteur se promène dans le bien depuis son téléphone, pièce par pièce, à toute heure.",
-    items: ["Capture 360°", "Plan interactif", "Intégration Yashome", "Lien partageable"],
-    cover: ILLU.villa,
-    creations: [{ title: "Villa Canastel", kind: "Visite complète", image: ILLU.villa, tone: "sand" }],
-  },
-  {
     id: "dev",
+    blurb: "Sites et pages de projet pensés pour générer des demandes.",
     tagline: "Votre vitrine en ligne.",
     cta: "Lancer un site",
     icon: "/images/departments/dev.svg",
@@ -192,7 +220,7 @@ export const bridge = {
   title: ["Filmé par le studio.", "Vu sur Yashome."],
   lead: "Le studio est né dans Yashome. Ce qu’on tourne pour vous part directement là où les acheteurs cherchent : la plateforme, vos réseaux et leurs fils d’actualité.",
   points: [
-    { k: "À la une sur Yashome", v: "Photos, film et visite 360° sur votre annonce." },
+    { k: "À la une sur Yashome", v: "Photos et film sur votre annonce." },
     { k: "Reels à votre nom", v: "Prêts à poster sur vos réseaux." },
     { k: "Publicité ciblée", v: "Par ville et par budget." },
   ],
@@ -266,6 +294,7 @@ export type Project = {
   film?: string;
   vertical: boolean;
   tone: Tone;
+  gallery?: string[];
 };
 
 const slugify = (s: string) =>
@@ -284,10 +313,13 @@ function build(): Project[] {
     for (const c of d.creations) {
       const slug = creationSlug(c);
       if (map.has(slug)) continue;
-      map.set(slug, { slug, title: c.title, kind: c.kind, client: "Agence immobilière", place: "Oran", department: d, poster: c.image, vertical: false, tone: c.tone });
+      map.set(slug, { slug, title: c.title, kind: c.kind, client: c.client ?? "Agence immobilière", place: "Oran", department: d, poster: c.image, vertical: !!c.vertical, tone: c.tone, gallery: c.gallery });
     }
   return [...map.values()];
 }
 
 export const projects = build();
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
+
+/** The best of each folder, for the home showcase: films and printed work side by side. */
+export const featured = ["riff-promotion", "calendrier-2026", "canastel", "posts-riff-promotion", "residence-el-hachemi", "montazah", "btpm-construction", "stand-ch-prom", "safwa", "nad-plaza", "sac-sidi-attallah"];
