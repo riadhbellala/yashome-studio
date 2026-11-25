@@ -18,7 +18,7 @@ export function Footer() {
   return (
     <footer className="bg-ground pb-5 md:pb-8">
       <div className="wrap">
-        <div className="overflow-hidden rounded-[36px] bg-second px-6 pt-12 text-white md:px-12 md:pt-16">
+        <div className="overflow-hidden rounded-[var(--radius-card)] bg-second px-6 pt-12 text-white md:px-12 md:pt-16">
           <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-12 lg:gap-5">
             <div className="col-span-2 lg:col-span-4">
               <Logo light />
@@ -31,7 +31,7 @@ export function Footer() {
             </div>
             <div className="lg:col-span-3">
               <Column title="Départements">
-                {departments.slice(0, 5).map((d) => <li key={d.id}><a href={`#dep-${d.id}`} className={link}>{d.name}</a></li>)}
+                {departments.slice(0, 5).map((d) => <li key={d.id}><a href={`/realisations#dep-${d.id}`} className={link}>{d.name}</a></li>)}
               </Column>
             </div>
             <div className="col-span-2 lg:col-span-3">

@@ -42,28 +42,22 @@ export function About() {
           { x: 0, y: 0, rotate: 0, autoAlpha: 1, ease: "power2.out", scrollTrigger: { trigger: root.current, start: "top 70%", end: "top 10%", scrub: 1.5 } },
         );
         gsap.to(".about-drone-bob", { y: -12, rotate: 3, duration: 2.4, ease: "sine.inOut", yoyo: true, repeat: -1 });
-        gsap.from(".about-bar", {
-          scaleX: 0,
-          transformOrigin: "left center",
-          ease: "power3.out",
-          scrollTrigger: { trigger: ".about-bar", start: "top 85%", end: "top 55%", scrub: 1 },
-        });
         gsap.from(".about-card", {
-          y: 60,
+          y: 16,
           autoAlpha: 0,
-          duration: 0.9,
+          duration: 0.6,
           ease: "power3.out",
-          stagger: 0.12,
+          stagger: 0.07,
           scrollTrigger: { trigger: ".about-cards", start: "top 85%" },
         });
         gsap.from(".about-prop", {
-          yPercent: 60,
-          scale: 0.6,
+          yPercent: 30,
+          scale: 0.92,
           autoAlpha: 0,
-          duration: 0.8,
-          ease: "back.out(1.8)",
-          stagger: 0.15,
-          delay: 0.35,
+          duration: 0.6,
+          ease: "power3.out",
+          stagger: 0.07,
+          delay: 0.25,
           transformOrigin: "50% 100%",
           scrollTrigger: { trigger: ".about-cards", start: "top 85%" },
         });
@@ -106,8 +100,7 @@ export function About() {
               de Yashome<span className="text-main">.</span>
             </MaskLine>
           </h2>
-          <span aria-hidden className="about-bar mt-8 block h-[6px] w-[min(100%,560px)] rounded-full bg-main" />
-          <p className="mt-8 max-w-[640px] text-[17px] leading-[1.65] ">{about.lead}</p>
+          <p className="mt-8 max-w-[60ch] text-[17px] leading-[1.65]">{about.lead}</p>
         </div>
 
       </div>
@@ -125,7 +118,7 @@ export function About() {
                 className={`about-prop pointer-events-none absolute bottom-[calc(100%-2px)] z-10 h-auto ${PROPS[i].cls}`}
                 style={{ right: 110 }}
               />
-              <article className="group relative flex h-full min-h-[280px] flex-col justify-end rounded-[28px] bg-second p-7 text-white md:p-9">
+              <article className="group relative flex h-full min-h-[280px] flex-col justify-end rounded-[var(--radius-card)] bg-second p-7 text-white md:p-9">
                 <Notch ground="#f5f2ed" size={86}>
                   <ArrowDot />
                 </Notch>

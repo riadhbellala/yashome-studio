@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/sections/bridge.tsx"
+        ],
+        "createdAt": "2026-11-25T12:34:40.509Z",
+        "reason": "Claude: L82 is viewfinder corner brackets (two-sided L marks), not a card side accent"
+      },
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/components/sections/bridge.tsx"
+        ],
+        "createdAt": "2026-11-25T12:34:40.530Z",
+        "reason": "Claude: L82 is viewfinder corner brackets (two-sided L marks), not a card side accent"
+      }
+    ]
+  }
+}

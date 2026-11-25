@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { RIBBON_PATH, RIBBON_VIEWBOX } from "@/components/ui/ribbon";
 
@@ -31,14 +32,14 @@ export function Button({
     maskImage: "radial-gradient(circle calc(var(--d) / 2 + 5px) at calc(100% + 8px) 50%, transparent 98%, #000 100%)",
   };
   return (
-    <a
+    <Link
       href={href}
       {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
       className={`press group inline-flex h-[54px] items-center text-[15px] font-semibold [--d:44px] [--px:24px] ${className}`}
     >
       <span
         style={{ ...bite, paddingLeft: "var(--px)", paddingRight: "calc(var(--d) / 2 + var(--px) - 8px)" }}
-        className={`relative flex h-full flex-1 items-center overflow-hidden rounded-[18px] ${t.body}`}
+        className={`relative flex h-full flex-1 items-center overflow-hidden rounded-[var(--radius-inner)] ${t.body}`}
       >
         <svg aria-hidden viewBox={RIBBON_VIEWBOX} fill="none" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 top-1/2 h-[120%] w-full -translate-y-1/2">
           <path
@@ -61,6 +62,6 @@ export function Button({
           <path d="M1 7h11m0 0L7 2m5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>
-    </a>
+    </Link>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { useRef, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { useState } from "react";
 import { contact } from "@/data/site";
 import { Button } from "@/components/ui/button";
 import { RIBBON_PATH, RIBBON_VIEWBOX } from "@/components/ui/ribbon";
@@ -13,7 +13,7 @@ const NEEDS = ["Shooting photo", "Vidéo & reels", "Drone", "Visite 360°", "Pub
 
 function Chip({ label, on, onClick }: { label: string; on: boolean; onClick: () => void }) {
   return (
-    <button type="button" aria-pressed={on} onClick={onClick} className={`press h-11 rounded-full px-4 text-[14px] font-medium ${on ? "bg-second text-white" : "bg-ground text-second hover:bg-sand"}`}>
+    <button type="button" aria-pressed={on} onClick={onClick} className={`press h-11 rounded-full px-4 text-[14px] font-medium ${on ? "bg-second text-white" : "bg-ground text-second hover-fine:bg-sand"}`}>
       {label}
     </button>
   );
@@ -21,13 +21,10 @@ function Chip({ label, on, onClick }: { label: string; on: boolean; onClick: () 
 
 /** A short brief instead of a form: three choices become a ready-to-send WhatsApp message. */
 export function Contact() {
-  const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const [property, setProperty] = useState(PROPERTIES[0]);
   const [needs, setNeeds] = useState<string[]>([NEEDS[0]]);
   const [city, setCity] = useState("");
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
-  const draw = useTransform(scrollYProgress, [0.1, 1], [reduce ? 1 : 0, 1]);
 
   const toggle = (n: string) => setNeeds((v) => (v.includes(n) ? v.filter((x) => x !== n) : [...v, n]));
   const place = city.trim() ? ` à ${city.trim()}` : "";
@@ -36,11 +33,11 @@ export function Contact() {
   const href = `${contact.whatsapp.href}?text=${encodeURIComponent(message)}`;
 
   return (
-    <section id="contact" ref={ref} aria-labelledby="contact-title" className="scroll-mt-20 bg-ground section-y">
+    <section id="contact" aria-labelledby="contact-title" className="scroll-mt-20 bg-ground section-y">
       <div className="wrap">
-        <div className="relative isolate overflow-hidden rounded-[36px] bg-main p-5 text-white sm:p-8 lg:p-14">
+        <div className="relative isolate overflow-hidden rounded-[var(--radius-card)] bg-main p-5 text-white sm:p-8 lg:p-14">
           <svg aria-hidden viewBox={RIBBON_VIEWBOX} fill="none" className="pointer-events-none absolute -left-[28%] bottom-[-3%] -z-10 w-[120%] lg:-left-[12%] lg:w-[78%]">
-            <motion.path d={RIBBON_PATH} stroke="#E00046" strokeWidth={75} strokeMiterlimit={10} style={{ pathLength: draw }} />
+            <path d={RIBBON_PATH} stroke="#E00046" strokeWidth={75} strokeMiterlimit={10} />
           </svg>
 
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-5">
@@ -62,11 +59,11 @@ export function Contact() {
             <motion.form
               onSubmit={(e) => e.preventDefault()}
               aria-label="Préparer votre demande"
-              initial={reduce ? false : { opacity: 0, y: 36 }}
+              initial={{ opacity: 0, y: reduce ? 0 : 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
-              className="rounded-[28px] bg-white p-6 text-second md:p-9 lg:col-span-6"
+              transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
+              className="rounded-[var(--radius-card)] bg-white p-6 text-second md:p-9 lg:col-span-6"
             >
               <fieldset>
                 <legend className="font-display t-h5">Votre bien</legend>

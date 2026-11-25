@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { nav } from "@/data/site";
 import { Logo } from "@/components/ui/logo";
@@ -19,11 +20,11 @@ export function Header() {
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(e.target.id === "top" ? null : `#${e.target.id}`);
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id === "top" ? null : e.target.id);
       },
       { rootMargin: "-45% 0px -50% 0px" },
     );
-    for (const id of ["top", ...nav.links.map((l) => l.href.slice(1))]) {
+    for (const id of ["top", ...nav.links.map((l) => l.href.split("#")[1]).filter(Boolean)]) {
       const el = document.getElementById(id);
       if (el) io.observe(el);
     }
@@ -43,9 +44,9 @@ export function Header() {
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${solid || open ? "bg-ground" : "bg-transparent"}`}
     >
       <div className="wrap relative flex h-[76px] items-center justify-between">
-        <a href="#top" aria-label="Yashome Studio, accueil" className="press">
+        <Link href="/" aria-label="Yashome Studio, accueil" className="press">
           <Logo />
-        </a>
+        </Link>
         <nav
           aria-label="Principale"
           onPointerLeave={() => setHovered(null)}
@@ -54,12 +55,12 @@ export function Header() {
           <span aria-hidden className="absolute -left-[24px] top-0 size-[24px]" style={{ background: "radial-gradient(circle at 0 100%, transparent 24px, #fff 24.5px)" }} />
           <span aria-hidden className="absolute -right-[24px] top-0 size-[24px]" style={{ background: "radial-gradient(circle at 100% 100%, transparent 24px, #fff 24.5px)" }} />
           {nav.links.map((l) => {
-            const marked = (hovered ?? active) === l.href;
+            const marked = hovered ? hovered === l.href : !!active && l.href.endsWith(`#${active}`);
             return (
               <a
                 key={l.href}
                 href={l.href}
-                aria-current={active === l.href ? "location" : undefined}
+                aria-current={active && l.href.endsWith(`#${active}`) ? "location" : undefined}
                 onPointerEnter={() => setHovered(l.href)}
                 className={`relative px-4 py-2 text-[15px] font-medium transition-colors duration-200 ${marked ? "text-second" : "text-text-gray"}`}
               >

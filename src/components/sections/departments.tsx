@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useState } from "react";
-import { departments, type Department, type Creation } from "@/data/site";
+import { useEffect, useRef, useState } from "react";
+import { creationSlug, departments, type Creation, type Department } from "@/data/site";
 import { Button } from "@/components/ui/button";
 import { MaskLine } from "@/components/motion/reveal";
+import { SharedMedia } from "@/components/ui/shared-media";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
 const HEAD = { pink: "#FF004F", navy: "#151533", gold: "#C6B467" } as const;
@@ -21,29 +23,29 @@ export function Departments() {
             <h2 id="dep-title" className="font-display t-h2">
               <MaskLine>Nos départements</MaskLine>
             </h2>
-            <p className="max-w-[380px] pb-2 text-[17px] leading-[1.6]">Sept départements, une seule équipe. Choisissez un dossier pour voir ce qu’on y fait.</p>
+            <p className="max-w-[36ch] pb-2 text-[17px] leading-[1.6] text-text-gray">Sept départements, une seule équipe. Choisissez un dossier pour voir ce qu’on y fait.</p>
           </div>
 
-          <ul className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 md:mt-16 lg:grid-cols-4">
+          <ul className="head-gap grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {departments.map((d, i) => (
               <motion.li
                 key={d.id}
-                initial={{ opacity: 0, y: 28 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.7, ease: EASE, delay: (i % 4) * 0.07 }}
+                transition={{ duration: 0.6, ease: EASE, delay: (i % 4) * 0.06 }}
               >
                 <FolderCard dep={d} index={i} />
               </motion.li>
             ))}
             <motion.li
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.7, ease: EASE, delay: 0.21 }}
+              transition={{ duration: 0.6, ease: EASE, delay: 0.18 }}
             >
-              <a href="#contact" className="press group flex min-h-[220px] h-full flex-col justify-between rounded-[28px] bg-second p-7 text-white sm:aspect-square sm:min-h-0 sm:rounded-[36px]">
-                <span aria-hidden className="grid size-12 place-items-center rounded-full bg-main transition-transform duration-500 ease-[var(--ease-out)] group-hover:rotate-45">
+              <a href="#contact" className="press group flex min-h-[220px] h-full flex-col justify-between rounded-[var(--radius-card)] bg-second p-7 text-white sm:aspect-square sm:min-h-0 sm:rounded-[var(--radius-card)]">
+                <span aria-hidden className="grid size-12 place-items-center rounded-full bg-main transition-transform duration-500 ease-[var(--ease-out)] fine:group-hover:rotate-45">
                   <svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3m0 0H4.5M11 3v6.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </span>
                 <span>
@@ -56,12 +58,7 @@ export function Departments() {
         </div>
       </section>
 
-      {/* The seven departments form one group: one section padding around it, a smaller step inside */}
-      <div className="section-y flex flex-col bg-ground" style={{ gap: "calc(var(--sy) * 0.5)" }}>
-        {departments.map((d, i) => (
-          <DepartmentSection key={d.id} dep={d} index={i} />
-        ))}
-      </div>
+      <DepartmentIndex />
     </>
   );
 }
@@ -69,14 +66,9 @@ export function Departments() {
 /** Cut like the folder ref: coloured head, a tab notched into it, the name large, one line below. */
 function FolderCard({ dep, index }: { dep: Department; index: number }) {
   const head = index % 2 ? HEAD.navy : HEAD.pink;
-  const onGold = false;
   return (
-    <a href={`#dep-${dep.id}`} className="press group flex min-h-[240px] flex-col rounded-[28px] bg-white p-[10px] sm:aspect-square sm:min-h-0 sm:rounded-[36px]">
-      <div className="relative h-[96px] shrink-0 overflow-hidden rounded-[24px] sm:h-[34%] sm:rounded-[28px]" style={{ background: head }}>
-        <svg aria-hidden viewBox="0 0 2181 491" fill="none" className="absolute -right-[20%] -top-[30%] w-[120%] opacity-25 transition-transform duration-700 ease-[var(--ease-out)] group-hover:translate-x-[-6%]">
-          <path d="M27.5234 88.011C27.5234 88.011 481.481 577.319 830.507 422.7C1179.53 268.081 1047.67 69.5976 899.747 93.8005C806.138 109.117 727.434 230.481 835.787 294.443C944.139 358.404 1539.82 644.49 1624.38 232.942C1708.95 -178.607 2157.1 187.886 2157.1 187.886" stroke={onGold ? "#151533" : "#fff"} strokeWidth="75" />
-        </svg>
-        <span className={`absolute left-4 top-4 rounded-full px-3 py-1.5 text-[13px] font-semibold ${onGold ? "bg-second/10 text-second" : "bg-white/20 text-white"}`}>Département :</span>
+    <a href={`#dep-${dep.id}`} className="press group flex min-h-[240px] flex-col rounded-[var(--radius-card)] bg-white p-[10px] sm:aspect-square sm:min-h-0 sm:rounded-[var(--radius-card)]">
+      <div className="relative h-[96px] shrink-0 overflow-hidden rounded-[var(--radius-card)] sm:h-[34%] sm:rounded-[var(--radius-card)]" style={{ background: head }}>
         <div className="absolute bottom-0 right-0 flex h-[46%] items-center gap-2 rounded-tl-[24px] bg-white pl-5 pr-5">
           <span aria-hidden className="absolute -left-[24px] bottom-0 size-[24px]" style={{ background: "radial-gradient(circle at 0 0, transparent 24px, #fff 24.5px)" }} />
           <span aria-hidden className="absolute -top-[24px] right-0 size-[24px]" style={{ background: "radial-gradient(circle at 0 0, transparent 24px, #fff 24.5px)" }} />
@@ -88,103 +80,153 @@ function FolderCard({ dep, index }: { dep: Department; index: number }) {
         <h3 className="font-display mb-6 t-h4 text-second">{dep.name}</h3>
         <p className="flex items-center justify-between gap-3 text-[15px] text-text-gray">
           {dep.tagline}
-          <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-ground text-second transition-colors duration-300 group-hover:bg-main group-hover:text-white">↓</span>
+          <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-ground text-second transition-colors duration-200 fine:group-hover:bg-main fine:group-hover:text-white">↓</span>
         </p>
       </div>
     </a>
   );
 }
 
-function Visual({ c, cover }: { c: Creation; cover: string }) {
-  const src = c.image ?? cover;
-  const illu = src.startsWith("/images/illustrations");
-  return (
-    <div className={`relative h-full w-full ${illu ? "bg-[#fbe4ec]" : "bg-second"}`}>
-      <Image src={src} alt="" fill sizes="(min-width:1504px) 1300px, 92vw" className={illu ? "object-contain p-[6%]" : "object-cover"} />
-    </div>
-  );
-}
+const TONE = { pink: "bg-main text-white", navy: "bg-second text-white", gold: "bg-third text-second", sand: "bg-sand text-second" } as const;
 
-function Arrow({ dir, label, onClick }: { dir: 1 | -1; label: string; onClick: () => void }) {
-  return (
-    <button type="button" aria-label={label} onClick={onClick} className="press grid size-12 place-items-center rounded-full bg-ground text-second hover:bg-second hover:text-white">
-      <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden className={dir < 0 ? "rotate-180" : ""}>
-        <path d="M1 7h11m0 0L7 2m5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </button>
-  );
-}
-
-/** One department: intro, one large visual, then the current creation with its controls. */
-function DepartmentSection({ dep, index }: { dep: Department; index: number }) {
-  const [[slide, dir], setSlide] = useState<[number, number]>([0, 1]);
+/** One project tile. Films loop silently while on screen; projects without a visual yet show their name. */
+function Tile({ c, big, sizes }: { c: Creation; big: boolean; sizes: string }) {
+  const video = useRef<HTMLVideoElement>(null);
   const reduce = useReducedMotion();
-  const total = dep.creations.length;
-  const c = dep.creations[slide];
-  const go = (d: 1 | -1) => setSlide(([s]) => [(s + d + total) % total, d]);
-  const shift = reduce ? 0 : 6;
+  const clip = c.image?.startsWith("/videos/") ? c.image.replace(/\.jpg$/, ".mp4") : null;
+
+  useEffect(() => {
+    const el = video.current;
+    if (!el || reduce) return;
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? el.play().catch(() => {}) : el.pause()), { threshold: 0.3 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [reduce]);
 
   return (
-    <section id={`dep-${dep.id}`} aria-labelledby={`dep-${dep.id}-title`} className="scroll-mt-24 bg-ground">
+    <Link href={`/projets/${creationSlug(c)}`} className="press group flex h-full flex-col">
+      <SharedMedia slug={creationSlug(c)}>
+      <div className={`relative flex-1 overflow-hidden rounded-[var(--radius-card)] ${c.image ? "bg-second" : TONE[c.tone]} ${big ? "aspect-[4/3] lg:aspect-auto" : "aspect-[4/3]"}`}>
+        {clip ? (
+          <video ref={video} src={clip} poster={c.image} muted loop playsInline preload="none" aria-hidden className="absolute inset-0 size-full object-cover" />
+        ) : c.image ? (
+          <Image
+            src={c.image}
+            alt={`${c.title}, ${c.kind}`}
+            fill
+            sizes={sizes}
+            className={`transition-transform duration-[900ms] ease-[var(--ease-out)] fine:group-hover:scale-[1.03] ${c.image.startsWith("/images/illustrations") ? "bg-[#fbe4ec] object-contain p-[6%]" : "object-cover"}`}
+          />
+        ) : (
+          <span className="absolute left-6 top-6 text-[13px] font-medium opacity-70">Visuel à venir</span>
+        )}
+      </div>
+      </SharedMedia>
+      <span className="mt-3 flex justify-between gap-4 text-[14px]">
+        <span className="font-medium underline-offset-4 fine:group-hover:underline">{c.title}</span>
+        <span className="text-text-gray">{c.kind}</span>
+      </span>
+    </Link>
+  );
+}
+
+/**
+ * Every project, sorted by department. One row of tabs, a pink pill that slides to the chosen one,
+ * then all of that department's projects in a calm grid: the first one large, the rest beside it.
+ * The folder cards above link here by hash and open the right tab.
+ */
+function DepartmentIndex() {
+  const [active, setActive] = useState(0);
+  const reduce = useReducedMotion();
+  const dep = departments[active];
+  const list = dep.creations;
+  const tabs = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sync = () => {
+      const i = departments.findIndex((d) => `#dep-${d.id}` === location.hash);
+      if (i >= 0) setActive(i);
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, []);
+
+  // Keep the chosen tab in view on phones, where the row scrolls sideways.
+  useEffect(() => {
+    const row = tabs.current;
+    const el = row?.querySelector<HTMLElement>(`[data-i="${active}"]`);
+    if (!row || !el) return;
+    // Scroll the row only, never the page.
+    row.scrollTo({ left: el.offsetLeft - (row.clientWidth - el.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
+  }, [active, reduce]);
+
+  const grid =
+    list.length === 1 ? "grid-cols-1" : list.length === 2 ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[auto_auto]";
+
+  return (
+    <section aria-labelledby="dep-index-title" className="bg-ground section-y !pt-0">
+      {departments.map((d) => <span key={d.id} id={`dep-${d.id}`} className="block scroll-mt-28" aria-hidden />)}
       <div className="wrap">
-        <motion.article
-          initial={reduce ? false : { opacity: 0, y: 36 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="rounded-[36px] bg-white p-5 sm:p-8 lg:p-14"
-        >
-          <header className="grid gap-5 px-1 lg:grid-cols-12 lg:items-end lg:px-0">
-            <div className="lg:col-span-7">
-              <p className="text-[15px] font-medium text-main">{dep.tagline}</p>
-              <h2 id={`dep-${dep.id}-title`} className="font-display t-h3 mt-3">{dep.name}</h2>
-            </div>
-            <div className="lg:col-span-5">
-              <p className="text-[16px] leading-[1.6] text-text-gray">{dep.definition}</p>
-            </div>
-          </header>
+        <h2 id="dep-index-title" className="sr-only">Projets par département</h2>
 
-          <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-[28px] bg-second md:aspect-[16/8] lg:mt-10 lg:aspect-auto lg:h-[clamp(340px,calc(100vh-500px),760px)]">
-            <AnimatePresence initial={false} custom={dir}>
-              <motion.div
-                key={slide}
-                custom={dir}
-                className="absolute inset-0"
-                variants={{
-                  enter: (d: number) => ({ opacity: 0, x: `${d * shift}%`, scale: reduce ? 1 : 1.03 }),
-                  show: { opacity: 1, x: "0%", scale: 1 },
-                  exit: (d: number) => ({ opacity: 0, x: `${-d * shift}%` }),
-                }}
-                initial="enter"
-                animate="show"
-                exit="exit"
-                transition={{ duration: 0.65, ease: EASE }}
+        <div ref={tabs} role="tablist" aria-label="Départements" className="-mx-5 flex gap-1 overflow-x-auto px-5 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0">
+          {departments.map((d, i) => {
+            const on = i === active;
+            return (
+              <button
+                key={d.id}
+                data-i={i}
+                role="tab"
+                aria-selected={on}
+                aria-controls="dep-panel"
+                onClick={() => setActive(i)}
+                className={`relative h-11 shrink-0 rounded-full px-5 text-[15px] font-medium transition-colors duration-200 ${on ? "text-white" : "text-second fine:hover:bg-second/5"}`}
               >
-                <Visual c={c} cover={dep.cover} />
-              </motion.div>
-            </AnimatePresence>
-            <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[13px] font-medium text-second">Visuel d’exemple</span>
-          </div>
+                {on && <motion.span layoutId="dep-pill" className="absolute inset-0 rounded-full bg-main" transition={{ duration: reduce ? 0 : 0.4, ease: EASE }} />}
+                <span className="relative">{d.name}</span>
+              </button>
+            );
+          })}
+        </div>
 
-          <footer className="mt-7 flex flex-col gap-6 px-1 lg:mt-10 lg:flex-row lg:items-center lg:justify-between lg:px-0">
-            <div className="flex items-start gap-5">
-              <span aria-hidden className="font-display t-h2 text-[#ffd3e0]">{pad(index + 1)}</span>
-              <div aria-live="polite">
-                <h3 className="font-display t-h5">{c.title}</h3>
-                <p className="mt-1.5 text-[15px] text-text-gray">{c.kind}{total > 1 ? ` · ${slide + 1} sur ${total}` : ""}</p>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <Button href="#contact" className="max-sm:w-full">{dep.cta}</Button>
-              {total > 1 && (
-                <div className="flex gap-2 lg:ml-2">
-                  <Arrow dir={-1} label={`Création précédente, ${dep.name}`} onClick={() => go(-1)} />
-                  <Arrow dir={1} label={`Création suivante, ${dep.name}`} onClick={() => go(1)} />
+        <div id="dep-panel" role="tabpanel" aria-live="polite" className="mt-10 border-t border-second/15 pt-10 md:mt-12">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={dep.id}
+              initial={{ opacity: 0, y: reduce ? 0 : 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, ease: EASE }}
+            >
+              <header className="grid gap-6 lg:grid-cols-12 lg:items-end lg:gap-x-8">
+                <div className="lg:col-span-7">
+                  <p className="flex items-baseline gap-3 text-[14px] font-medium">
+                    <span className="tabular-nums text-main">{pad(active + 1)}</span>
+                    <span className="text-text-gray">{dep.tagline}</span>
+                  </p>
+                  <h3 className="font-display t-h3 mt-4">{dep.name}</h3>
+                  <p className="mt-4 max-w-[52ch] text-[17px] leading-[1.6] text-text-gray">{dep.definition}</p>
                 </div>
-              )}
-            </div>
-          </footer>
-        </motion.article>
+                <div className="flex flex-col gap-5 lg:col-span-5 lg:items-end">
+                  <p className="text-[14px] text-text-gray lg:text-right">{dep.items.join(" · ")}</p>
+                  <Button href="#contact" className="max-sm:w-full">{dep.cta}</Button>
+                </div>
+              </header>
+
+              <ul className={`mt-10 grid gap-5 ${grid}`}>
+                {list.map((c, i) => {
+                  const big = list.length >= 3 && i === 0;
+                  return (
+                    <li key={c.title + i} className={big ? "lg:col-span-2 lg:row-span-2" : ""}>
+                      <Tile c={c} big={big} sizes={big ? "(min-width:1024px) 62vw, 92vw" : "(min-width:1024px) 30vw, (min-width:640px) 46vw, 92vw"} />
+                    </li>
+                  );
+                })}
+              </ul>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );

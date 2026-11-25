@@ -2,10 +2,10 @@
 
 export const nav = {
   links: [
-    { label: "Départements", href: "#departements" },
-    { label: "Réalisations", href: "#realisations" },
-    { label: "Méthode", href: "#methode" },
-    { label: "Studio", href: "#studio" },
+    { label: "Départements", href: "/realisations" },
+    { label: "Réalisations", href: "/#realisations" },
+    { label: "Méthode", href: "/#methode" },
+    { label: "Studio", href: "/#studio" },
     { label: "Contact", href: "#contact" },
   ],
   cta: { label: "Démarrer un projet", href: "#contact" },
@@ -14,7 +14,7 @@ export const nav = {
 export const hero = {
   line: "Shooting, drone, vidéo et publicité pour les agences immobilières et les promoteurs. On met vos biens en scène, Yashome les met devant les acheteurs.",
   primary: { label: "Démarrer un projet", href: "#contact" },
-  secondary: { label: "Voir les réalisations", href: "#realisations" },
+  secondary: { label: "Voir les réalisations", href: "/realisations" },
   tags: ["Shooting photo", "Drone 4K", "Reels", "Visite 360°", "Ads"],
 };
 
@@ -71,9 +71,9 @@ export const departments: Department[] = [
     items: ["Film de visite", "Vues drone 4K", "Reels verticaux", "Motion design"],
     cover: ILLU.villa,
     creations: [
-      { title: "Les Terrasses du Front de mer", kind: "Film drone", image: ILLU.villa, tone: "pink" },
-      { title: "Projet Belle Vue", kind: "Film de lancement", tone: "navy" },
-      { title: "Villa Canastel", kind: "Reel 30 s", tone: "gold" },
+      { title: "Riff Promotion", kind: "Film de lancement", image: "/videos/riff-promotion.jpg", tone: "navy" },
+      { title: "Résidence Safwa", kind: "Collage vidéo", image: "/videos/safwa.jpg", tone: "pink" },
+      { title: "Montazah", kind: "Reel", image: "/videos/montazah.jpg", tone: "gold" },
     ],
   },
   {
@@ -156,18 +156,27 @@ export type Work = {
   title: string;
   client: string;
   place: string;
-  services: string[];
-  image?: string;
-  tone: Tone;
+  kind: string;
+  /** Short silent loop shown on the card. */
+  preview: string;
+  poster: string;
+  /** Full film, streamed only when the visitor opens it. */
+  film: string;
+  vertical: boolean;
 };
 
-/** Selected works. Sample entries until the client sends the real projects. */
+const R2 = "https://pub-0dadb4cbf6734b90a3601fb2eeec942f.r2.dev";
+const v = (id: string) => ({ preview: `/videos/${id}.mp4`, poster: `/videos/${id}.jpg` });
+
+/** Selected films. Places and clients are placeholders until confirmed. */
 export const works: Work[] = [
-  { id: "w1", title: "Résidence Les Pins", client: "Promoteur", place: "Oran, Bir El Djir", services: ["Drone", "Film"], image: ILLU.photo, tone: "navy" },
-  { id: "w2", title: "Villa Canastel", client: "Agence immobilière", place: "Oran, Canastel", services: ["Shooting", "360°"], image: ILLU.villa2, tone: "pink" },
-  { id: "w3", title: "Campagne de lancement", client: "Yashome", place: "Algérie", services: ["Réseaux", "Ads"], image: ILLU.campaign, tone: "navy" },
-  { id: "w4", title: "Les Terrasses du Front de mer", client: "Promoteur", place: "Alger, Bordj El Kiffan", services: ["Branding", "Reels"], image: ILLU.building, tone: "gold" },
-  { id: "w5", title: "Appartement F4 Hydra", client: "Agence immobilière", place: "Alger, Hydra", services: ["Shooting", "Reels"], image: ILLU.appart, tone: "sand" },
+  { id: "canastel", title: "F4 Canastel", client: "Agence immobilière", place: "Oran, Canastel", kind: "Film de visite", ...v("canastel"), film: `${R2}/F4%20canastel.mp4`, vertical: true },
+  { id: "riff-promotion", title: "Riff Promotion", client: "Promoteur", place: "Oran", kind: "Film de lancement", ...v("riff-promotion"), film: `${R2}/RIFF%20PROMOTION%20modifier.mp4`, vertical: false },
+  { id: "montazah", title: "Montazah", client: "Yashome", place: "Oran", kind: "Reel", ...v("montazah"), film: `${R2}/montazah%20by%20yashome%20(1).mp4`, vertical: true },
+  { id: "millenium", title: "F5 Millenium", client: "Agence immobilière", place: "Oran", kind: "Film de visite", ...v("millenium"), film: `${R2}/F5%20millinieum%20001%20mp4.mp4`, vertical: true },
+  { id: "logis", title: "Logis", client: "Yashome", place: "Oran", kind: "Reel", ...v("logis"), film: `${R2}/logis%20by%20yashome%20.mp4`, vertical: true },
+  { id: "safwa", title: "Résidence Safwa", client: "Riff Promotion", place: "Oran", kind: "Collage vidéo", ...v("safwa"), film: `${R2}/riff%20collage%20safwa%20(1).mp4`, vertical: true },
+  { id: "riff-reels", title: "Série de reels", client: "Riff Promotion", place: "Oran", kind: "Reels", ...v("riff-reels"), film: `${R2}/riff%20reels..%2002.mp4`, vertical: true },
 ];
 
 export const partners = [
@@ -183,17 +192,18 @@ export const bridge = {
   title: ["Filmé par le studio.", "Vu sur Yashome."],
   lead: "Le studio est né dans Yashome. Ce qu’on tourne pour vous part directement là où les acheteurs cherchent : la plateforme, vos réseaux et leurs fils d’actualité.",
   points: [
-    { k: "Sur Yashome", v: "Vos annonces passent à la une, avec photos, film et visite 360°." },
-    { k: "Sur vos réseaux", v: "Reels et publications prêts à poster, à votre nom." },
-    { k: "En publicité", v: "Campagnes ciblées par ville et par budget." },
+    { k: "À la une sur Yashome", v: "Photos, film et visite 360° sur votre annonce." },
+    { k: "Reels à votre nom", v: "Prêts à poster sur vos réseaux." },
+    { k: "Publicité ciblée", v: "Par ville et par budget." },
   ],
 };
 
+/** Timings are indicative placeholders. */
 export const method = [
-  { verb: "On visite", text: "Repérage du bien, de la lumière et des meilleurs angles. On fixe le plan de tournage avec vous." },
-  { verb: "On tourne", text: "Une demi-journée sur place : photo, vidéo et drone dans la même session." },
-  { verb: "On publie", text: "Annonce mise en avant sur Yashome, reels sur vos réseaux, campagnes lancées." },
-  { verb: "On mesure", text: "Vues, appels, demandes de visite : un rapport simple chaque semaine." },
+  { when: "Jour 1", verb: "On visite", text: "Repérage du bien, de la lumière et des meilleurs angles. On fixe le plan de tournage avec vous." },
+  { when: "Jour 3", verb: "On tourne", text: "Une demi-journée sur place : photo, vidéo et drone dans la même session." },
+  { when: "Jour 7", verb: "On publie", text: "Annonce mise en avant sur Yashome, reels sur vos réseaux, campagnes lancées." },
+  { when: "Chaque semaine", verb: "On mesure", text: "Vues, appels, demandes de visite : un rapport simple chaque semaine." },
 ];
 
 export const audiences = [
@@ -241,3 +251,43 @@ export const about = {
     { title: "Engagement", text: "Des délais tenus, des tarifs clairs et un suivi chaque semaine, du premier repérage à la vente." },
   ],
 };
+
+/* ---------- Projects: one page per work ---------- */
+
+export type Project = {
+  slug: string;
+  title: string;
+  kind: string;
+  client: string;
+  place: string;
+  department?: Department;
+  poster?: string;
+  preview?: string;
+  film?: string;
+  vertical: boolean;
+  tone: Tone;
+};
+
+const slugify = (s: string) =>
+  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+/** Slug of a department creation. Films share the slug of their work, so both lead to the same page. */
+export const creationSlug = (c: Creation) => (c.image?.startsWith("/videos/") ? c.image.slice(8, -4) : slugify(c.title));
+
+function build(): Project[] {
+  const map = new Map<string, Project>();
+  for (const w of works) {
+    const department = departments.find((d) => d.creations.some((c) => creationSlug(c) === w.id));
+    map.set(w.id, { slug: w.id, title: w.title, kind: w.kind, client: w.client, place: w.place, department, poster: w.poster, preview: w.preview, film: w.film, vertical: w.vertical, tone: "navy" });
+  }
+  for (const d of departments)
+    for (const c of d.creations) {
+      const slug = creationSlug(c);
+      if (map.has(slug)) continue;
+      map.set(slug, { slug, title: c.title, kind: c.kind, client: "Agence immobilière", place: "Oran", department: d, poster: c.image, vertical: false, tone: c.tone });
+    }
+  return [...map.values()];
+}
+
+export const projects = build();
+export const getProject = (slug: string) => projects.find((p) => p.slug === slug);

@@ -7,12 +7,12 @@ const EASE = [0.23, 1, 0.32, 1] as const;
 
 const group: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.06 } },
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } },
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
 };
 
 /** Parent that staggers its <RevealItem> children once, when it enters the viewport. */
@@ -36,24 +36,20 @@ export function RevealItem({ children, className, as = "div" }: { children: Reac
 }
 
 /**
- * Line of display type that rises out of a mask. The wrapper is what gets observed: the moving
- * span starts fully clipped, so watching it directly would never report it as visible.
+ * Section heading line: a quiet fade and small rise, once. The big mask reveal is kept for the hero only.
+ * Reduced motion keeps the fade and drops the movement.
  */
 export function MaskLine({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
   const reduce = useReducedMotion();
   return (
     <motion.span
-      className={`block overflow-hidden pb-[0.06em] ${className ?? ""}`}
-      initial={reduce ? "show" : "hidden"}
-      whileInView="show"
-      viewport={{ once: true, amount: 0.1 }}
+      className={`block ${className ?? ""}`}
+      initial={{ opacity: 0, y: reduce ? 0 : 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: EASE, delay }}
     >
-      <motion.span
-        className="block"
-        variants={{ hidden: { y: "105%" }, show: { y: "0%", transition: { duration: 1, ease: EASE, delay } } }}
-      >
-        {children}
-      </motion.span>
+      {children}
     </motion.span>
   );
 }

@@ -16,6 +16,17 @@
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --radius-card: 24px;
+  --radius-inner: 16px;
+}
+
+/* Hover effects only for a real mouse, never stuck on touch */
+@custom-variant fine (@media (hover: hover) and (pointer: fine));
+@custom-variant hover-fine {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover { @slot; }
+  }
 }
 
 html {
@@ -31,6 +42,10 @@ body {
   font-family: var(--font-sans);
   overflow-x: clip;
 }
+
+h1, h2, h3, h4 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
+.tabular-nums, time { font-variant-numeric: tabular-nums; }
 
 ::selection { background: var(--color-main); color: #fff; }
 
@@ -48,6 +63,10 @@ body {
 @utility section-y {
   padding-block: var(--sy);
 }
+/* One gap between a section heading and its content */
+@utility head-gap {
+  margin-top: clamp(40px, 4.2vw, 72px);
+}
 
 @utility wrap {
   margin-inline: auto;
@@ -61,9 +80,6 @@ body {
   }
 }
 
-@keyframes float-a { 0%,100% { transform: translate3d(0,0,0) rotate(var(--r,0deg)); } 50% { transform: translate3d(0,-16px,0) rotate(calc(var(--r,0deg) + 4deg)); } }
-.float { animation: float-a 6s ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) { .float { animation: none; } }
 
 .font-display {
   font-family: var(--font-display);
@@ -81,6 +97,7 @@ body {
 .bob { animation: hover-bob 5s ease-in-out infinite; }
 
 @keyframes marquee { to { transform: translate3d(-50%, 0, 0); } }
+@keyframes meter { from { transform: scaleY(0.35); } to { transform: scaleY(1); } }
 .marquee { animation: marquee 38s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -117,3 +134,31 @@ body {
 .t-h3 { font-size: clamp(30px, 3.4vw, 80px); line-height: 1; letter-spacing: -.045em; }
 .t-h4 { font-size: clamp(24px, 2vw, 46px); line-height: 1.05; letter-spacing: -.04em; }
 .t-h5 { font-size: 19px; line-height: 1.2; letter-spacing: -.03em; }
+
+/* ---------- Page transitions: the project picture morphs, the rest crossfades ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+::view-transition-group(.morph) {
+  animation-duration: 560ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: via-blur;
+}
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+}
+@keyframes via-blur {
+  35% { filter: blur(2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
