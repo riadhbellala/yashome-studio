@@ -139,7 +139,7 @@ export function Method() {
             <MaskLine>De la visite</MaskLine>
             <MaskLine delay={0.06}>à la vente.</MaskLine>
           </h2>
-          <p className="mt-6 max-w-[40ch] text-[17px] leading-[1.6] text-text-gray">
+          <p className="mt-6 max-w-[36ch] text-[17px] leading-[1.6] text-text-gray">
             Une semaine entre le premier repérage et votre bien en ligne. Voici celle de la Résidence Riff.
           </p>
 

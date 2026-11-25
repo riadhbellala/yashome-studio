@@ -35,8 +35,8 @@ export function Works() {
           <h2 id="works-title" className="font-display t-h2">
             <MaskLine>Nos réalisations</MaskLine>
           </h2>
-          <div className="flex flex-col items-end gap-4 pb-2">
-            <p className="hidden max-w-[36ch] text-right text-[17px] leading-[1.6] text-text-gray md:block">
+          <div className="flex flex-col items-start gap-4 pb-2">
+            <p className="hidden max-w-[36ch] text-[17px] leading-[1.6] text-text-gray md:block">
               Films de visite, lancements et reels, tournés pour des agences et des promoteurs.
             </p>
             <Link href="/realisations" className="press group inline-flex shrink-0 items-center gap-2 text-[15px] font-medium">

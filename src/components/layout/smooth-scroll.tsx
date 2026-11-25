@@ -24,7 +24,7 @@ export function SmoothScroll() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce), (pointer: coarse)").matches) return;
-    const l = new Lenis({ lerp: 0.1, anchors: { offset: -72 } });
+    const l = new Lenis({ lerp: 0.075, wheelMultiplier: 0.9, anchors: { offset: -72 } });
     lenis.current = l;
     l.on("scroll", ScrollTrigger.update);
     const tick = (t: number) => l.raf(t * 1000);

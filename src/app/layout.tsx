@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, Poppins } from "next/font/google";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
+import { SectionFade } from "@/components/motion/section-fade";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="fr" className={`${archivo.variable} ${poppins.variable}`}>
       <body>
         <SmoothScroll />
+        <SectionFade />
         {children}
       </body>
     </html>

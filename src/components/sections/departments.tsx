@@ -13,8 +13,8 @@ const EASE = [0.23, 1, 0.32, 1] as const;
 const HEAD = { pink: "#FF004F", navy: "#151533", gold: "#C6B467" } as const;
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** The index: one small folder per department. Each one jumps to its own section below. */
-export function Departments() {
+/** The index: one small folder per department. `base` is where the folders lead: "" on the projects page, "/realisations" from home. */
+export function Departments({ base = "", withProjects = true }: { base?: string; withProjects?: boolean }) {
   return (
     <>
       <section id="departements" aria-labelledby="dep-title" className="scroll-mt-20 bg-ground section-y">
@@ -35,7 +35,7 @@ export function Departments() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6, ease: EASE, delay: (i % 4) * 0.06 }}
               >
-                <FolderCard dep={d} index={i} />
+                <FolderCard dep={d} index={i} href={`${base}#dep-${d.id}`} />
               </motion.li>
             ))}
             <motion.li
@@ -58,18 +58,32 @@ export function Departments() {
         </div>
       </section>
 
-      <DepartmentIndex />
+      {withProjects && <DepartmentIndex />}
     </>
   );
 }
 
-/** Cut like the folder ref: coloured head, a tab notched into it, the name large, one line below. */
-function FolderCard({ dep, index }: { dep: Department; index: number }) {
+/**
+ * Cut like the folder ref: coloured head with the brand ribbon, the department's own drawing tucked
+ * in like a sheet that rises when you point at it, a tab notched into the head, the name large below.
+ */
+function FolderCard({ dep, index, href }: { dep: Department; index: number; href: string }) {
   const head = index % 2 ? HEAD.navy : HEAD.pink;
+  const count = dep.creations.length;
   return (
-    <a href={`#dep-${dep.id}`} className="press group flex min-h-[240px] flex-col rounded-[var(--radius-card)] bg-white p-[10px] sm:aspect-square sm:min-h-0 sm:rounded-[var(--radius-card)]">
-      <div className="relative h-[96px] shrink-0 overflow-hidden rounded-[var(--radius-card)] sm:h-[34%] sm:rounded-[var(--radius-card)]" style={{ background: head }}>
-        <div className="absolute bottom-0 right-0 flex h-[46%] items-center gap-2 rounded-tl-[24px] bg-white pl-5 pr-5">
+    <a href={href} className="press group flex min-h-[260px] flex-col rounded-[var(--radius-card)] bg-white p-[10px] sm:aspect-square sm:min-h-0">
+      <div className="relative h-[110px] shrink-0 overflow-hidden rounded-[var(--radius-card)] sm:h-[40%]" style={{ background: head }}>
+        <svg aria-hidden viewBox="0 0 2181 491" fill="none" className="absolute -right-[20%] -top-[30%] w-[120%] opacity-20 transition-transform duration-700 ease-[var(--ease-out)] fine:group-hover:-translate-x-[6%]">
+          <path d="M27.5234 88.011C27.5234 88.011 481.481 577.319 830.507 422.7C1179.53 268.081 1047.67 69.5976 899.747 93.8005C806.138 109.117 727.434 230.481 835.787 294.443C944.139 358.404 1539.82 644.49 1624.38 232.942C1708.95 -178.607 2157.1 187.886 2157.1 187.886" stroke="#fff" strokeWidth="75" />
+        </svg>
+        <span className="absolute left-4 top-4 rounded-full bg-white/20 px-3 py-1.5 text-[13px] font-medium text-white">
+          {count} projet{count > 1 ? "s" : ""}
+        </span>
+        {/* The drawing on a white sheet, half tucked in the folder */}
+        <span className="absolute bottom-[-14%] left-5 grid aspect-square h-[82%] translate-y-[4%] place-items-center rounded-[var(--radius-inner)] bg-white transition-transform duration-500 ease-[var(--ease-out)] fine:group-hover:-translate-y-[8%] fine:group-hover:-rotate-3">
+          <Image src={dep.icon} alt="" width={120} height={120} className="h-[72%] w-auto" />
+        </span>
+        <div className="absolute bottom-0 right-0 flex h-[42%] items-center gap-2 rounded-tl-[24px] bg-white pl-5 pr-5">
           <span aria-hidden className="absolute -left-[24px] bottom-0 size-[24px]" style={{ background: "radial-gradient(circle at 0 0, transparent 24px, #fff 24.5px)" }} />
           <span aria-hidden className="absolute -top-[24px] right-0 size-[24px]" style={{ background: "radial-gradient(circle at 0 0, transparent 24px, #fff 24.5px)" }} />
           <span className="text-[14px] text-text-gray">dossier</span>
@@ -80,7 +94,7 @@ function FolderCard({ dep, index }: { dep: Department; index: number }) {
         <h3 className="font-display mb-6 t-h4 text-second">{dep.name}</h3>
         <p className="flex items-center justify-between gap-3 text-[15px] text-text-gray">
           {dep.tagline}
-          <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-ground text-second transition-colors duration-200 fine:group-hover:bg-main fine:group-hover:text-white">↓</span>
+          <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-ground text-second transition-[background-color,color,transform] duration-300 ease-[var(--ease-out)] fine:group-hover:-rotate-45 fine:group-hover:bg-main fine:group-hover:text-white">→</span>
         </p>
       </div>
     </a>

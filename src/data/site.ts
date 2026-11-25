@@ -2,7 +2,7 @@
 
 export const nav = {
   links: [
-    { label: "Départements", href: "/realisations" },
+    { label: "Départements", href: "/#departements" },
     { label: "Réalisations", href: "/#realisations" },
     { label: "Méthode", href: "/#methode" },
     { label: "Studio", href: "/#studio" },

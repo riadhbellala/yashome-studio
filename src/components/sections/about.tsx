@@ -100,7 +100,7 @@ export function About() {
               de Yashome<span className="text-main">.</span>
             </MaskLine>
           </h2>
-          <p className="mt-8 max-w-[60ch] text-[17px] leading-[1.65]">{about.lead}</p>
+          <p className="mt-8 max-w-[60ch] text-[17px] leading-[1.6]">{about.lead}</p>
         </div>
 
       </div>

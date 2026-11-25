@@ -51,16 +51,28 @@ export function Bridge() {
   return (
     <section ref={section} aria-labelledby="bridge-title" className="relative overflow-hidden bg-ground section-y">
       <div className="wrap">
-        <h2 id="bridge-title" className="sr-only">Filmé par le studio, vu sur Yashome</h2>
+        {/* Header, set like every other section: title left, lead right */}
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <h2 id="bridge-title" className="font-display t-h2">
+            <MaskLine>Filmé par le studio.</MaskLine>
+            <MaskLine delay={0.06}>
+              <span className="text-main">Vu sur Yashome.</span>
+            </MaskLine>
+          </h2>
+          <div className="max-w-[36ch] pb-2">
+            <p className="text-[17px] leading-[1.6] text-text-gray">{bridge.lead}</p>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {bridge.points.map((p) => (
+                <li key={p.k} className="rounded-full bg-white px-4 py-2 text-[14px] font-medium">{p.k}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-        <div className="grid gap-y-16 md:grid-cols-12 md:gap-x-8">
+        <div className="head-gap grid items-center gap-y-12 md:grid-cols-12 md:gap-x-8">
           {/* Filmed */}
           <figure className="max-w-[340px] md:col-span-4 md:max-w-none">
-            <p aria-hidden className="font-display t-h3">
-              <MaskLine>Filmé par</MaskLine>
-              <MaskLine delay={0.06}>le studio.</MaskLine>
-            </p>
-            <motion.div style={{ y: camY }} className="relative mt-8">
+            <motion.div style={{ y: camY }} className="relative">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-second">
                 <video ref={video} src={CLIP.preview} poster={CLIP.poster} muted loop playsInline preload="none" aria-hidden className="absolute inset-0 size-full scale-[1.02] object-cover" />
                 {/* Soft vignette so the overlay always reads */}
@@ -74,11 +86,11 @@ export function Bridge() {
                   <span className="absolute left-1/2 top-1/2 size-14 -translate-x-1/2 -translate-y-1/2 rounded-[4px] border border-white/60">
                     <span className="absolute left-1/2 top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/80" />
                   </span>
-                  <span className="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-black/30 px-2.5 py-1 text-[11px] font-semibold tracking-[0.1em] backdrop-blur-sm">
+                  <span className="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-black/30 px-2.5 py-1 text-[11px] font-semibold tracking-[0.1em]">
                     <span className="size-1.5 animate-pulse rounded-full bg-main motion-reduce:animate-none" />
                     REC
                   </span>
-                  <span className="absolute right-4 top-4 rounded-full bg-black/30 px-2.5 py-1 text-[11px] font-medium tabular-nums backdrop-blur-sm">{tc}</span>
+                  <span className="absolute right-4 top-4 rounded-full bg-black/30 px-2.5 py-1 text-[11px] font-medium tabular-nums">{tc}</span>
                   <span className="absolute bottom-4 left-4 text-[11px] font-medium tracking-[0.06em] text-white/85">4K · 25 i/s</span>
                   {/* Audio level, quiet bars */}
                   <span className="absolute bottom-4 right-4 flex h-3 items-end gap-[3px]">
@@ -124,14 +136,9 @@ export function Bridge() {
           </div>
 
           {/* Seen */}
-          <figure className="md:col-span-5 md:col-start-8 md:flex md:flex-col">
-            <p aria-hidden className="font-display t-h3 text-main">
-              <MaskLine delay={0.12}>Vu sur</MaskLine>
-              <MaskLine delay={0.18}>Yashome.</MaskLine>
-            </p>
+          <figure className="md:col-span-5 md:col-start-8">
             {/* No surface: the laptop and phone stand on the page, a soft shadow grounds them */}
-            {/* Devices centred against the video on the left */}
-            <div className="mt-8 md:flex md:flex-1 md:items-center">
+            <div>
             <div className="relative w-full pb-[2%] pl-[9%]">
               <span aria-hidden className="absolute -bottom-2 left-[6%] right-[2%] h-6 rounded-[50%] bg-second/15 blur-xl" />
               <Image src="/images/devices/laptop-yashome.webp" alt="Le site Yashome sur un ordinateur portable" width={1360} height={837} sizes="(min-width:768px) 40vw, 84vw" className="relative w-full" />
@@ -152,14 +159,6 @@ export function Bridge() {
           </figure>
         </div>
 
-        <div className="head-gap grid gap-y-6 md:grid-cols-12 md:items-end md:gap-x-8">
-          <p className="max-w-[52ch] text-[17px] leading-[1.6] text-text-gray md:col-span-5">{bridge.lead}</p>
-          <ul className="flex flex-wrap gap-2 md:col-span-7 md:justify-end">
-            {bridge.points.map((p) => (
-              <li key={p.k} className="rounded-full bg-white px-4 py-2 text-[14px] font-medium">{p.k}</li>
-            ))}
-          </ul>
-        </div>
       </div>
     </section>
   );
